@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "omnibachi.governance.schemas.SCHEMA_TRANSPORT_EVENT_V0",
+  "title": "OmniBachi Transport Event Schema V0",
+  "description": "JSON Schema for materialized transport event (TE) artifacts",
+  "type": "object",
+  "required": ["te_code", "version", "governed_by", "core"],
+  "additionalProperties": false,
+  "properties": {
+    "te_code": {
+      "type": "string",
+      "pattern": "^TE_[A-Z0-9_]+_V[0-9]+$",
+      "description": "Unique transport event identifier"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^v[0-9]+$",
+      "description": "Version string"
+    },
+    "governed_by": {
+      "type": "string",
+      "const": "CONSTITUTION_TRANSPORT_V0",
+      "description": "Governing constitution"
+    },
+    "core": {
+      "type": "object",
+      "required": ["summary", "schema"],
+      "additionalProperties": false,
+      "properties": {
+        "summary": {
+          "type": "string",
+          "description": "Short event description"
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed event description"
+        },
+        "schema": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/fieldDef"
+          },
+          "description": "Event payload schema"
+        }
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "fieldDef": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["string", "number", "boolean", "object", "array", "integer"]
+        },
+        "format": {
+          "type": "string",
+          "description": "Format hint (e.g., date-time)"
+        },
+        "required": {
+          "type": "boolean",
+          "default": false
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

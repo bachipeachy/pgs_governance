@@ -1,0 +1,220 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "SCHEMA_TRACE_EVENT_V0",
+  "title": "Trace Event Schema",
+  "description": "Schema for execution trace events. Governed by CONSTITUTION_TRACE_EXECUTION_V0.",
+  "type": "object",
+  "required": ["event_type", "timestamp", "execution_id", "sequence"],
+  "properties": {
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "execution_start",
+        "node_start",
+        "node_end",
+        "workflow_complete",
+        "capability_dispatch",
+        "transform_start",
+        "transform_end",
+        "side_effect_start",
+        "side_effect_end",
+        "context_snapshot",
+        "audit_event",
+        "error"
+      ],
+      "description": "Type of trace event"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Event timestamp in ISO-8601 format"
+    },
+    "execution_id": {
+      "type": "string",
+      "description": "Unique execution identifier"
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Monotonically increasing sequence number"
+    },
+    "prev_hash": {
+      "type": ["string", "null"],
+      "description": "Hash of previous event (ADVANCED only)"
+    },
+    "payload": {
+      "type": "object",
+      "description": "Event-specific payload"
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"event_type": {"const": "execution_start"}}},
+      "then": {
+        "properties": {
+          "payload": {
+            "type": "object",
+            "required": ["workflow_code"],
+            "properties": {
+              "workflow_code": {"type": "string"},
+              "policy_profile": {"type": "string"},
+              "input_hash": {"type": "string"}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"event_type": {"const": "node_start"}}},
+      "then": {
+        "properties": {
+          "payload": {
+            "type": "object",
+            "required": ["node_id", "node_type"],
+            "properties": {
+              "node_id": {"type": "string"},
+              "node_type": {"type": "string"},
+              "capability_code": {"type": "string"}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"event_type": {"const": "node_end"}}},
+      "then": {
+        "properties": {
+          "payload": {
+            "type": "object",
+            "required": ["node_id", "status", "duration_ms"],
+            "properties": {
+              "node_id": {"type": "string"},
+              "status": {"type": "string", "enum": ["completed", "failed", "skipped"]},
+              "duration_ms": {"type": "integer"}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"event_type": {"const": "workflow_complete"}}},
+      "then": {
+        "properties": {
+          "payload": {
+            "type": "object",
+            "required": ["status", "duration_ms", "exit_condition", "exit_reason_code"],
+            "properties": {
+              "status": {"type": "string", "enum": ["SUCCESS", "FAILURE", "ABORT", "TIMEOUT"]},
+              "duration_ms": {"type": "integer"},
+              "exit_condition": {"type": "string"},
+              "exit_reason_code": {
+                "type": "string",
+                "enum": ["COMPLETED", "NO_ENTRY_NODE", "NO_TRANSITION", "NODE_NOT_FOUND", "EXECUTION_ERROR", "TIMEOUT", "ABORT", "ADMISSION_DENIED", "GOVERNANCE_VIOLATION", "EXIT_NOT_FOUND", "EXIT_VIOLATION", "EXIT_BACKEND_ERROR", "EXIT_REJECTED", "EXIT_ALREADY_EXISTS"]
+              },
+              "context_hash": {"type": "string"}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"event_type": {"const": "capability_dispatch"}}},
+      "then": {
+        "properties": {
+          "payload": {
+            "type": "object",
+            "required": ["cc_code", "node_id"],
+            "properties": {
+              "cc_code": {"type": "string"},
+              "node_id": {"type": "string"}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"event_type": {"const": "transform_start"}}},
+      "then": {
+        "properties": {
+          "payload": {
+            "type": "object",
+            "required": ["ct_code"],
+            "properties": {
+              "ct_code": {"type": "string"},
+              "inputs_hash": {"type": "string"}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"event_type": {"const": "transform_end"}}},
+      "then": {
+        "properties": {
+          "payload": {
+            "type": "object",
+            "required": ["ct_code", "duration_ms"],
+            "properties": {
+              "ct_code": {"type": "string"},
+              "outputs_hash": {"type": "string"},
+              "duration_ms": {"type": "integer"}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"event_type": {"const": "context_snapshot"}}},
+      "then": {
+        "properties": {
+          "payload": {
+            "type": "object",
+            "required": ["context_hash", "sequence"],
+            "properties": {
+              "context_hash": {"type": "string"},
+              "sequence": {"type": "integer"}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"event_type": {"const": "error"}}},
+      "then": {
+        "properties": {
+          "payload": {
+            "type": "object",
+            "required": ["error_code", "message", "node_category"],
+            "properties": {
+              "error_code": {
+                "type": "string",
+                "enum": [
+                  "EXPRESSION_RESOLUTION_FAILED",
+                  "SCHEMA_VALIDATION_FAILED",
+                  "BINDING_RESOLUTION_FAILED",
+                  "CT_VALIDATION_FAILED",
+                  "CT_EXECUTION_FAILED",
+                  "CT_ARTIFACT_NOT_FOUND",
+                  "CS_EXECUTION_FAILED",
+                  "CAPABILITY_NOT_FOUND",
+                  "CAPABILITY_DISPATCH_FAILED",
+                  "NODE_NOT_FOUND",
+                  "INTENT_NOT_FOUND",
+                  "PROTOCOL_LOAD_FAILED",
+                  "EXECUTION_ERROR"
+                ]
+              },
+              "message": {"type": "string"},
+              "node_id": {"type": "string"},
+              "node_category": {
+                "type": "string",
+                "enum": ["WF", "IN", "CC", "CT", "CS"]
+              },
+              "details": {"type": "object"}
+            }
+          }
+        }
+      }
+    }
+  ]
+}

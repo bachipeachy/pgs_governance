@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "SCHEMA_EXECUTION_NODE_V0",
+  "title": "Execution Node State Schema",
+  "description": "Schema for node execution state. Governed by CONSTITUTION_EXECUTION_V0.",
+  "type": "object",
+  "required": ["node_id", "status", "started_at"],
+  "additionalProperties": false,
+  "properties": {
+    "node_id": {
+      "type": "string",
+      "description": "Node identifier from DAG"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "running", "completed", "failed", "skipped"],
+      "description": "Current execution status"
+    },
+    "started_at": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Execution start timestamp"
+    },
+    "completed_at": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Execution completion timestamp"
+    },
+    "duration_ms": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "description": "Execution duration in milliseconds"
+    },
+    "inputs": {
+      "type": "object",
+      "description": "Resolved input values"
+    },
+    "outputs": {
+      "type": "object",
+      "description": "Produced output values"
+    },
+    "error": {
+      "type": ["object", "null"],
+      "properties": {
+        "code": {"type": "string"},
+        "message": {"type": "string"},
+        "details": {"type": "object"}
+      },
+      "description": "Error details if failed"
+    },
+    "retry_count": {
+      "type": "integer",
+      "minimum": 0,
+      "default": 0,
+      "description": "Number of retry attempts"
+    }
+  }
+}

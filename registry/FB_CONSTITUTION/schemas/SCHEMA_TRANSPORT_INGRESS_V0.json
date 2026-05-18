@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "omnibachi.governance.schemas.SCHEMA_TRANSPORT_INGRESS_V0",
+  "title": "OmniBachi Transport Ingress Schema V0",
+  "description": "JSON Schema for materialized transport ingress (TI) artifacts",
+  "type": "object",
+  "required": ["ti_code", "version", "governed_by", "core"],
+  "additionalProperties": false,
+  "properties": {
+    "ti_code": {
+      "type": "string",
+      "pattern": "^TI_[A-Z0-9_]+_V[0-9]+$",
+      "description": "Unique transport ingress identifier"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^v[0-9]+$",
+      "description": "Version string"
+    },
+    "governed_by": {
+      "type": "string",
+      "const": "CONSTITUTION_TRANSPORT_V0",
+      "description": "Governing constitution"
+    },
+    "core": {
+      "type": "object",
+      "required": ["summary", "workflow", "route", "admission_schema", "outcomes"],
+      "additionalProperties": false,
+      "properties": {
+        "summary": {
+          "type": "string",
+          "description": "Human-readable summary"
+        },
+        "workflow": {
+          "type": "string",
+          "pattern": "^WF_[A-Z0-9_]+_V[0-9]+$",
+          "description": "Workflow that processes this ingress"
+        },
+        "route": {
+          "type": "object",
+          "required": ["method", "path", "content_type"],
+          "additionalProperties": false,
+          "properties": {
+            "method": {
+              "type": "string",
+              "enum": ["GET", "POST", "PUT", "DELETE", "PATCH"],
+              "description": "HTTP method"
+            },
+            "path": {
+              "type": "string",
+              "pattern": "^/",
+              "description": "URL path"
+            },
+            "content_type": {
+              "type": "string",
+              "description": "Expected content type"
+            }
+          }
+        },
+        "admission_schema": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/fieldDef"
+          },
+          "description": "Structural validation schema for request body"
+        },
+        "outcomes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["description"],
+            "properties": {
+              "description": { "type": "string" }
+            }
+          },
+          "description": "Possible outcomes (ACK/NACK)"
+        }
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "domain": {
+          "type": "string",
+          "description": "Domain namespace"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "fieldDef": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Field type"
+        },
+        "required": {
+          "type": "boolean",
+          "default": false
+        },
+        "pattern": {
+          "type": "string",
+          "description": "Regex pattern for validation"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

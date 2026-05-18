@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "omnibachi.governance.schemas.SCHEMA_CAPABILITY_SIDE_EFFECT_V0",
+  "title": "OmniBachi Capability Side Effect Schema V0",
+  "description": "JSON Schema for materialized capability side effect artifacts. Structural validation only — semantic correctness governed by ASSERT_CS_* handlers.",
+  "type": "object",
+  "required": ["cs_code", "version", "governed_by", "implementation", "core"],
+  "additionalProperties": false,
+  "properties": {
+    "cs_code": {
+      "type": "string",
+      "pattern": "^CS_[A-Z0-9_]+_V[0-9]+$",
+      "description": "Unique capability side effect identifier"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[Vv][0-9]+$",
+      "description": "Version string"
+    },
+    "governed_by": {
+      "type": "string",
+      "description": "Governing constitution FQDN"
+    },
+    "implementation": {
+      "type": "object",
+      "required": ["module", "callable"],
+      "additionalProperties": false,
+      "properties": {
+        "module": {
+          "type": "string",
+          "description": "Fully-qualified Python module path for the CS implementation"
+        },
+        "callable": {
+          "type": "string",
+          "description": "Callable name within the module"
+        }
+      },
+      "description": "Runtime implementation binding for this side effect"
+    },
+    "core": {
+      "type": "object",
+      "required": ["summary", "operations"],
+      "additionalProperties": true,
+      "properties": {
+        "summary": {
+          "type": "string",
+          "description": "Human-readable summary"
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed description"
+        },
+        "category": {
+          "type": "string",
+          "enum": ["storage", "external", "ephemeral", "execution_gateway"],
+          "description": "Side effect category"
+        },
+        "policy": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "Policy configuration for this side effect"
+        },
+        "operations": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/operation"
+          },
+          "description": "Available operations"
+        }
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "operation": {
+      "type": "object",
+      "required": ["summary", "handler", "idempotent", "input", "output"],
+      "additionalProperties": true,
+      "properties": {
+        "summary": {
+          "type": "string",
+          "description": "Operation summary"
+        },
+        "handler": {
+          "type": "string",
+          "description": "Handler method name"
+        },
+        "idempotent": {
+          "type": "boolean",
+          "description": "Whether operation is idempotent"
+        },
+        "input": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Input field names"
+        },
+        "output": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Output field names"
+        },
+        "result_status_values": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Possible result status values"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Additional notes"
+        }
+      }
+    }
+  }
+}

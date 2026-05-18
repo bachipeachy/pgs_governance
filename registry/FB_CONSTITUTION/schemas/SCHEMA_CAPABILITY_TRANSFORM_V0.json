@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "omnibachi.governance.schemas.SCHEMA_CAPABILITY_TRANSFORM_V0",
+  "title": "OmniBachi Capability Transform Schema V0",
+  "description": "JSON Schema for Capability Transform artifact frontmatter. CT artifacts declare a core section (summary, I/O contracts) and a machine section (execution binding).",
+  "type": "object",
+  "required": ["ct_code", "version", "governed_by", "core", "machine"],
+  "additionalProperties": false,
+  "properties": {
+    "ct_code": {
+      "type": "string",
+      "pattern": "^CT_[A-Z0-9_]+_V[0-9]+$",
+      "description": "Unique capability transform identifier"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[Vv][0-9]+$",
+      "description": "Version string"
+    },
+    "governed_by": {
+      "type": "string",
+      "description": "Governing constitution FQDN"
+    },
+    "core": {
+      "type": "object",
+      "required": ["summary"],
+      "additionalProperties": false,
+      "properties": {
+        "summary": {
+          "type": "string",
+          "description": "Human-readable summary of the transform"
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed description"
+        },
+        "inputs": {
+          "type": "object",
+          "description": "Input field definitions",
+          "additionalProperties": {
+            "$ref": "#/$defs/fieldDef"
+          }
+        },
+        "outputs": {
+          "type": "object",
+          "description": "Output field definitions",
+          "additionalProperties": {
+            "$ref": "#/$defs/fieldDef"
+          }
+        }
+      },
+      "description": "Human-facing contract: summary, I/O declarations"
+    },
+    "machine": {
+      "type": "object",
+      "required": ["ct_kind"],
+      "additionalProperties": false,
+      "properties": {
+        "ct_kind": {
+          "type": "string",
+          "enum": ["atom", "molecule"],
+          "description": "Transform type: atom (primitive) or molecule (composite)"
+        },
+        "ct_purity": {
+          "type": "string",
+          "enum": ["ct_pure", "ct_impure", "ct_exec"],
+          "description": "Purity classification: ct_pure has zero side effects"
+        },
+        "operation": {
+          "type": "string",
+          "description": "Operation name to invoke on the bound implementation (atoms only)"
+        },
+        "implementation": {
+          "type": "object",
+          "required": ["module", "callable"],
+          "additionalProperties": false,
+          "properties": {
+            "module": {
+              "type": "string",
+              "description": "Fully-qualified Python module path for the CT implementation"
+            },
+            "callable": {
+              "type": "string",
+              "description": "Callable name within the module"
+            }
+          },
+          "description": "Runtime implementation binding (atoms only)"
+        },
+        "atom_stream": {
+          "type": "array",
+          "description": "Ordered sequence of atom invocations (molecules only)",
+          "items": {
+            "type": "object"
+          }
+        },
+        "inputs": {
+          "type": "object",
+          "description": "Molecule-level input declarations",
+          "additionalProperties": true
+        },
+        "outputs": {
+          "type": "object",
+          "description": "Molecule-level output declarations",
+          "additionalProperties": true
+        }
+      },
+      "description": "Machine-executable binding: ct_kind, implementation (atom) or atom_stream (molecule)"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Optional extension fields"
+    }
+  },
+  "$defs": {
+    "fieldDef": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Field type name"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string"
+        },
+        "default": {},
+        "enum": {
+          "type": "array"
+        },
+        "allowed_values": {
+          "type": "array"
+        }
+      }
+    }
+  }
+}

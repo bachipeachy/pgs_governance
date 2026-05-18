@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "omnibachi.governance.schemas.SCHEMA_WORKFLOW_V0",
+  "title": "OmniBachi Workflow Schema V0",
+  "description": "JSON Schema for materialized workflow artifacts. Structural validation only — semantic topology correctness governed by ASSERT_TOPOLOGY_* handlers.",
+  "type": "object",
+  "required": ["wf_code", "version", "governed_by", "core"],
+  "additionalProperties": false,
+  "properties": {
+    "wf_code": {
+      "type": "string",
+      "pattern": "^WF_[A-Z0-9_]+_V[0-9]+$",
+      "description": "Unique workflow identifier"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[Vv][0-9]+$",
+      "description": "Version string"
+    },
+    "governed_by": {
+      "type": "string",
+      "description": "Governing constitution FQDN"
+    },
+    "runtime_binding": {
+      "type": "string",
+      "description": "FQDN of the runtime binding artifact (RB_) that resolves CS implementations for this workflow"
+    },
+    "structure": {
+      "type": "string",
+      "description": "FQDN of the structure artifact that governs this workflow's build configuration"
+    },
+    "core": {
+      "type": "object",
+      "required": ["summary", "start_node", "nodes"],
+      "additionalProperties": true,
+      "properties": {
+        "summary": {
+          "type": "string",
+          "description": "Human-readable summary of workflow purpose"
+        },
+        "admission": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "requires": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Events that must have occurred before workflow can execute"
+            },
+            "forbids": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Events that must NOT have occurred"
+            },
+            "bindings": {
+              "type": "object",
+              "additionalProperties": true,
+              "description": "Field bindings from admission events to payload"
+            }
+          }
+        },
+        "start_node": {
+          "type": "string",
+          "description": "Entry node code (must be an intent node)"
+        },
+        "nodes": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/node"
+          },
+          "description": "Map of node code to node definition"
+        }
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Optional extension fields"
+    }
+  },
+  "$defs": {
+    "node": {
+      "type": "object",
+      "required": ["type"],
+      "additionalProperties": true,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["IN", "CC", "EV", "EXIT"],
+          "description": "Node type"
+        },
+        "code": {
+          "type": "string",
+          "description": "Referenced artifact code"
+        },
+        "fqdn_id": {
+          "type": "string",
+          "description": "Fully-qualified artifact identifier"
+        },
+        "reason": {
+          "type": "string",
+          "enum": ["EXITED", "COMPLETED", "FAILED", "HALTED", "DUPLICATE_NONCE"],
+          "description": "Exit reason (for EXIT nodes)"
+        },
+        "emit": {
+          "description": "Event code or emission declaration for this node"
+        },
+        "inputs": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "Input bindings using JSONPath expressions"
+        },
+        "next": {
+          "type": "object",
+          "additionalProperties": { "type": "string" },
+          "description": "Transition map from result_status to next node"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,74 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pgs-governance"
+version = "0.2.0"
+description = "Protocol-Governed Systems — constitutional governance, federated boundaries, structural artifact definitions, and invariant enforcement"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+
+authors = [
+  { name = "Bhash Ganti aka Bachi" }
+]
+
+keywords = [
+  "protocol-governed-systems",
+  "pgs",
+  "governance",
+  "deterministic-execution",
+  "federated-governance",
+  "invariants",
+  "assertions"
+]
+
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Operating System :: OS Independent",
+  "Topic :: Software Development",
+  "Topic :: System :: Distributed Computing"
+]
+
+dependencies = [
+  "pyyaml",
+  "jsonschema"
+]
+
+[project.urls]
+Homepage = "https://github.com/bachipeachy/pgs_governance"
+Repository = "https://github.com/bachipeachy/pgs_governance"
+
+[tool.setuptools]
+include-package-data = true
+packages = [
+  "pgs_governance",
+  "pgs_governance.implementation",
+  "pgs_governance.implementation.assertions",
+  "pgs_governance.implementation.assertions.handlers",
+  "pgs_governance.implementation.conformance",
+  "pgs_governance.implementation.conformance.machine",
+  "pgs_governance.implementation.conformance.oracle",
+  "pgs_governance.implementation.conformance.utils",
+  "pgs_governance.implementation.constitution_validator",
+  "pgs_governance.implementation.vocabulary",
+  "pgs_governance.implementation.vocabulary.builder",
+  "pgs_governance.registry",
+  "pgs_governance.structure",
+  "pgs_governance.structure.structure",
+  "pgs_governance.structure.structure.discovery",
+  "pgs_governance.structure.structure.loading",
+  "pgs_governance.structure.structure.resolution",
+]
+
+[tool.setuptools.package-dir]
+"pgs_governance" = "."
+
+[tool.setuptools.package-data]
+"*" = ["*.md", "*.yaml", "*.json"]

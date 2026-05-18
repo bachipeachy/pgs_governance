@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "omnibachi.governance.schemas.SCHEMA_INTENT_V0",
+  "title": "OmniBachi Intent Schema V0",
+  "description": "JSON Schema for materialized intent artifacts",
+  "type": "object",
+  "required": ["in_code", "version", "governed_by", "core"],
+  "additionalProperties": false,
+  "properties": {
+    "in_code": {
+      "type": "string",
+      "pattern": "^IN_[A-Z0-9_]+_V[0-9]+$",
+      "description": "Unique intent identifier"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^v[0-9]+$",
+      "description": "Version string"
+    },
+    "governed_by": {
+      "type": "string",
+      "const": "CONSTITUTION_INTENT_V0",
+      "description": "Governing constitution"
+    },
+    "core": {
+      "type": "object",
+      "required": ["summary", "workflow", "inputs", "outcomes"],
+      "additionalProperties": false,
+      "properties": {
+        "summary": {
+          "type": "string",
+          "description": "Human-readable summary of intent purpose"
+        },
+        "workflow": {
+          "type": "string",
+          "pattern": "^WF_[A-Z0-9_]+_V[0-9]+$",
+          "description": "Workflow that processes this intent"
+        },
+        "inputs": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/inputField"
+          },
+          "description": "Input field definitions"
+        },
+        "outcomes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["description"],
+            "properties": {
+              "description": { "type": "string" }
+            }
+          },
+          "description": "Possible outcomes (ACK/NACK)"
+        }
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "domain": {
+          "type": "string",
+          "description": "Domain namespace"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "inputField": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["string", "number", "boolean", "object", "array"],
+          "description": "Field type"
+        },
+        "required": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether field is required"
+        },
+        "default": {
+          "description": "Default value if not provided"
+        },
+        "description": {
+          "type": "string",
+          "description": "Human-readable description"
+        }
+      }
+    }
+  }
+}

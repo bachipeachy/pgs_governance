@@ -1,0 +1,78 @@
+{
+  "schema_code": "SCHEMA_AUTHORITY_REGISTRY_V0",
+  "artifact_kind": "SCHEMA",
+  "version": "V0",
+  "governed_by": "governance.authority::CONSTITUTION_AUTHORITY_GOVERNANCE_V0",
+  "description": "Schema for the V0 static governed authority registry — the source of truth for actor execution eligibility and observation authority grants",
+  "structure": {
+    "type": "object",
+    "description": "Top-level object keyed by actor FQDN",
+    "key_format": "actor_fqdn",
+    "value_schema": {
+      "type": "object",
+      "fields": {
+        "execution_authority": {
+          "type": "object",
+          "required": true,
+          "description": "Execution eligibility declarations for this actor",
+          "fields": {
+            "allowed_workflows": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "fqdn"
+              },
+              "required": true,
+              "description": "Explicit list of workflow FQDNs the actor is authorized to invoke; wildcards are forbidden"
+            }
+          }
+        },
+        "observation_authority": {
+          "type": "object",
+          "required": false,
+          "description": "Observation eligibility declarations: what this actor may observe; defaults to no observation rights if absent",
+          "fields": {
+            "visibility_scope": {
+              "type": "object",
+              "required": false,
+              "description": "Projection visibility constraints for this actor"
+            },
+            "trace_scope": {
+              "type": "object",
+              "required": false,
+              "description": "Trace visibility constraints for this actor"
+            }
+          }
+        }
+      }
+    }
+  },
+  "example": {
+    "actor::alice": {
+      "execution_authority": {
+        "allowed_workflows": [
+          "finance::WF_TRANSFER_FUNDS_V0"
+        ]
+      }
+    },
+    "actor::bob": {
+      "execution_authority": {
+        "allowed_workflows": [
+          "blockchain::WF_REGISTER_ACTOR_UNVERIFIED_V0"
+        ]
+      },
+      "observation_authority": {
+        "visibility_scope": {},
+        "trace_scope": {}
+      }
+    }
+  },
+  "constraints": [
+    "Actor keys MUST use FQDN format",
+    "Workflow values MUST use FQDN format",
+    "Wildcard grants are a constitutional violation — authority not explicitly granted is denied",
+    "Compiler validates: actor references exist, workflow references exist, schema correctness",
+    "Runtime reads resolved authority state only — never mutates this registry",
+    "Observation authority is separate from execution authority — one may be granted without the other"
+  ]
+}

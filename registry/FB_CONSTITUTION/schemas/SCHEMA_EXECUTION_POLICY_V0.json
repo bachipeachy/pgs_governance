@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "SCHEMA_EXECUTION_POLICY_V0",
+  "title": "Execution Policy Schema",
+  "description": "Schema for execution policy profiles. Governed by CONSTITUTION_EXECUTION_POLICY_V0.",
+  "type": "object",
+  "required": ["policy_profile", "trace_depth", "replay_guarantee", "audit_trail", "encrypted_execution", "aot_compilation"],
+  "additionalProperties": false,
+  "properties": {
+    "policy_profile": {
+      "type": "string",
+      "enum": ["BASIC", "ADVANCED"],
+      "description": "Policy profile identifier"
+    },
+    "trace_depth": {
+      "type": "string",
+      "enum": ["minimal", "full"],
+      "description": "Trace event emission depth"
+    },
+    "replay_guarantee": {
+      "type": "boolean",
+      "description": "Whether execution is replay-safe"
+    },
+    "audit_trail": {
+      "type": "boolean",
+      "description": "Whether audit events are emitted"
+    },
+    "encrypted_execution": {
+      "oneOf": [
+        {"type": "boolean"},
+        {"type": "string", "const": "optional"}
+      ],
+      "description": "Whether execution context is encrypted"
+    },
+    "aot_compilation": {
+      "oneOf": [
+        {"type": "boolean"},
+        {"type": "string", "const": "optional"}
+      ],
+      "description": "Whether ahead-of-time compilation is enabled"
+    },
+    "license_key": {
+      "type": ["string", "null"],
+      "description": "License key for ADVANCED profile"
+    }
+  },
+  "$defs": {
+    "basic_profile": {
+      "type": "object",
+      "properties": {
+        "policy_profile": {"const": "BASIC"},
+        "trace_depth": {"const": "minimal"},
+        "replay_guarantee": {"const": false},
+        "audit_trail": {"const": false},
+        "encrypted_execution": {"const": false},
+        "aot_compilation": {"const": false}
+      }
+    },
+    "advanced_profile": {
+      "type": "object",
+      "properties": {
+        "policy_profile": {"const": "ADVANCED"},
+        "trace_depth": {"const": "full"},
+        "replay_guarantee": {"const": true},
+        "audit_trail": {"const": true},
+        "encrypted_execution": {"enum": [true, false, "optional"]},
+        "aot_compilation": {"enum": [true, false, "optional"]}
+      }
+    }
+  }
+}

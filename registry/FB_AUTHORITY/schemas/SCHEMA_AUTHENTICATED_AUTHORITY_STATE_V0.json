@@ -1,0 +1,93 @@
+{
+  "schema_code": "SCHEMA_AUTHENTICATED_AUTHORITY_STATE_V0",
+  "artifact_kind": "SCHEMA",
+  "version": "V0",
+  "governed_by": "governance.authority::CONSTITUTION_AUTHORITY_GOVERNANCE_V0",
+  "description": "Schema for the authenticated authority state — the fully resolved actor identity, authentication outcome, execution eligibility, observation authority, and authority provenance produced at the authority boundary before execution begins",
+  "fields": {
+    "actor_id": {
+      "type": "string",
+      "required": true,
+      "description": "Fully qualified identifier of the actor whose authority was evaluated"
+    },
+    "authenticated": {
+      "type": "boolean",
+      "required": true,
+      "description": "Whether the actor's identity was successfully authenticated"
+    },
+    "authentication_mechanism": {
+      "type": "string",
+      "required": true,
+      "description": "V0: 'static_identity' — mechanism used; extensible for PKI/JWT in future phases without redesign"
+    },
+    "identity_claims": {
+      "type": "object",
+      "required": true,
+      "description": "Resolved identity claims from the authentication process; structure is mechanism-dependent and opaque to execution"
+    },
+    "execution_authority": {
+      "type": "object",
+      "required": true,
+      "description": "Execution eligibility: what this actor is authorized to execute",
+      "fields": {
+        "authorized_workflows": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "fqdn"
+          },
+          "required": true,
+          "description": "Explicit list of workflow FQDNs the actor is authorized to invoke; wildcards are forbidden"
+        }
+      }
+    },
+    "observation_authority": {
+      "type": "object",
+      "required": true,
+      "description": "Observation eligibility: what this actor is authorized to observe — distinct from execution authority",
+      "fields": {
+        "visibility_scope": {
+          "type": "object",
+          "required": true,
+          "description": "Projection visibility constraints: what output projections and TE results the actor may receive"
+        },
+        "trace_scope": {
+          "type": "object",
+          "required": true,
+          "description": "Trace visibility constraints: what execution trace data the actor may access"
+        }
+      }
+    },
+    "authority_provenance": {
+      "type": "object",
+      "required": true,
+      "description": "Provenance chain for this authority state: source, evaluation timestamp, and chain of authority — the foundation of non-repudiation",
+      "fields": {
+        "source": {
+          "type": "string",
+          "required": true,
+          "description": "Authority source identifier (e.g., authority registry path or authority issuer)"
+        },
+        "evaluated_at": {
+          "type": "string",
+          "format": "iso8601",
+          "required": true,
+          "description": "Timestamp when authority was evaluated at the boundary"
+        }
+      }
+    },
+    "failure_reason": {
+      "type": "string",
+      "required": false,
+      "description": "If authenticated is false: the reason authentication failed; absent if authenticated is true"
+    }
+  },
+  "constraints": [
+    "If authenticated is false, failure_reason MUST be present",
+    "If authenticated is true, failure_reason MUST be absent",
+    "execution_authority.authorized_workflows entries MUST use FQDN format",
+    "Wildcard workflow grants are a constitutional violation",
+    "This state is immutable once produced — execution consumes it without mutation",
+    "Authentication mechanisms terminate before runtime traversal begins"
+  ]
+}

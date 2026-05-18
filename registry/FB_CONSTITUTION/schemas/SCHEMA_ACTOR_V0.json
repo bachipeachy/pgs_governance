@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "omnibachi.governance.schemas.SCHEMA_ACTOR_V0",
+  "title": "OmniBachi Actor Schema V0",
+  "description": "JSON Schema for materialized actor artifacts",
+  "type": "object",
+  "required": ["ac_code", "version", "governed_by", "core"],
+  "additionalProperties": false,
+  "properties": {
+    "ac_code": {
+      "type": "string",
+      "pattern": "^AC_[A-Z0-9_]+_V[0-9]+$",
+      "description": "Unique actor identifier"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^v[0-9]+$",
+      "description": "Version string"
+    },
+    "governed_by": {
+      "type": "string",
+      "const": "CONSTITUTION_GOVERNANCE_V0",
+      "description": "Governing constitution"
+    },
+    "core": {
+      "type": "object",
+      "required": ["summary", "role"],
+      "additionalProperties": false,
+      "properties": {
+        "summary": {
+          "type": "string",
+          "description": "Human-readable summary of actor type"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["enduser", "system", "service", "operator"],
+          "description": "Actor role category"
+        },
+        "permissions": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Permitted actions for this actor type"
+        },
+        "constraints": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Constraints on this actor type"
+        }
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

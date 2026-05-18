@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "SCHEMA_EXECUTION_DAG_V0",
+  "title": "Execution DAG Schema",
+  "description": "Schema for workflow execution DAG structure. Governed by CONSTITUTION_EXECUTION_V0.",
+  "type": "object",
+  "required": ["dag_id", "workflow_code", "nodes", "edges", "entry_nodes", "terminal_nodes"],
+  "additionalProperties": false,
+  "properties": {
+    "dag_id": {
+      "type": "string",
+      "pattern": "^DAG_[A-Za-z0-9_]+$",
+      "description": "Unique identifier for this DAG instance"
+    },
+    "workflow_code": {
+      "type": "string",
+      "pattern": "^WF_[A-Z0-9_]+_V[0-9]+$",
+      "description": "Source workflow code"
+    },
+    "nodes": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/node"
+      },
+      "description": "Map of node_id to node definition"
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/edge"
+      },
+      "description": "Directed edges representing dependencies"
+    },
+    "entry_nodes": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1,
+      "description": "Nodes with no incoming edges"
+    },
+    "terminal_nodes": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1,
+      "description": "Nodes with no outgoing edges"
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "created_at": {"type": "string", "format": "date-time"},
+        "source_hash": {"type": "string"}
+      }
+    }
+  },
+  "$defs": {
+    "node": {
+      "type": "object",
+      "required": ["node_id", "node_type", "capability_code"],
+      "properties": {
+        "node_id": {
+          "type": "string",
+          "description": "Unique node identifier within DAG"
+        },
+        "node_type": {
+          "type": "string",
+          "enum": ["intent", "capability_contract"],
+          "description": "Determines dispatch path"
+        },
+        "capability_code": {
+          "type": "string",
+          "description": "IN_* or CC_* code to execute"
+        },
+        "input_bindings": {
+          "type": "object",
+          "additionalProperties": {"type": "string"},
+          "description": "JSONPath bindings for inputs"
+        },
+        "output_bindings": {
+          "type": "object",
+          "additionalProperties": {"type": "string"},
+          "description": "Where to store outputs in context"
+        }
+      }
+    },
+    "edge": {
+      "type": "object",
+      "required": ["from_node", "to_node"],
+      "properties": {
+        "from_node": {"type": "string"},
+        "to_node": {"type": "string"},
+        "condition": {
+          "type": "string",
+          "description": "Optional conditional expression"
+        }
+      }
+    }
+  }
+}

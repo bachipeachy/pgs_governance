@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "omnibachi.governance.schemas.SCHEMA_CT_IR_V0",
+  "title": "OmniBachi CT-IR Schema V0",
+  "description": "JSON Schema for lowered CT-IR artifacts (compiler output). Governed by CONSTITUTION_COMPILER_V0.",
+  "type": "object",
+  "required": ["ct_composition_version", "ct_code", "inputs", "atom_stream", "outputs"],
+  "additionalProperties": false,
+  "properties": {
+    "ct_composition_version": {
+      "type": "string",
+      "const": "0",
+      "description": "CT-IR format version"
+    },
+    "ct_code": {
+      "type": "string",
+      "pattern": "^CT_[A-Z0-9_]+_V[0-9]+(_MOLECULE)?$",
+      "description": "Source molecule identifier"
+    },
+    "ct_kind": {
+      "type": "string",
+      "const": "molecule",
+      "description": "Always 'molecule' for CT-IR"
+    },
+    "inputs": {
+      "type": "object",
+      "description": "Input parameter definitions",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["type"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["string", "number", "boolean", "object", "array", "any"]
+          }
+        }
+      }
+    },
+    "atom_stream": {
+      "type": "array",
+      "description": "Ordered sequence of atom instructions (execution order)",
+      "items": { "$ref": "#/$defs/atomInstruction" }
+    },
+    "outputs": {
+      "type": "object",
+      "description": "Output definitions with source symbol references",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["from", "type"],
+        "properties": {
+          "from": {
+            "type": "string",
+            "description": "Symbol name from atom_stream"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["string", "number", "boolean", "object", "array", "any"]
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "atomInstruction": {
+      "type": "object",
+      "required": ["atom", "args", "out"],
+      "additionalProperties": false,
+      "properties": {
+        "atom": {
+          "type": "string",
+          "description": "Atom instruction name or molecule CT code"
+        },
+        "args": {
+          "type": "object",
+          "description": "Resolved input arguments",
+          "additionalProperties": true
+        },
+        "out": {
+          "type": ["string", "null"],
+          "description": "Output symbol name"
+        },
+        "loop": {
+          "type": "object",
+          "description": "Loop configuration (for loop atoms only)",
+          "properties": {
+            "over": { "type": "string" },
+            "iterator": { "type": "string" },
+            "accumulator": { "type": "object" },
+            "inputs": { "type": "object" },
+            "update_accumulator": { "type": "object" }
+          }
+        }
+      }
+    }
+  }
+}

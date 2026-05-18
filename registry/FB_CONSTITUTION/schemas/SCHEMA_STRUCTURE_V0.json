@@ -1,0 +1,164 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "governance.layers::SCHEMA_STRUCTURE_V0",
+  "title": "SCHEMA_STRUCTURE_V0",
+  "description": "Structural definitions for STRUCTURE artifacts governed by CONSTITUTION_STRUCTURE_V0",
+  "version": "V0",
+  "governed_by": "fb.constitution::CONSTITUTION_STRUCTURE_V0",
+
+  "definitions": {
+    "layer_path": {
+      "type": "object",
+      "description": "A layer-relative path declaration",
+      "required": ["layer", "subpath"],
+      "additionalProperties": false,
+      "properties": {
+        "layer": {
+          "type": "string",
+          "description": "Valid layer code from STRUCTURE_LAYER_AUTHORITY_V0"
+        },
+        "subpath": {
+          "type": "string",
+          "description": "Path relative to layer root. MUST NOT contain '..'. MAY contain '{domain}' template.",
+          "pattern": "^(?!.*\\.\\./)"
+        },
+        "artifact_type": {
+          "type": "string",
+          "description": "Optional: 'compiled' adds /compiled/ prefix to subpath resolution",
+          "enum": ["compiled"]
+        }
+      }
+    },
+
+    "artifact_discovery": {
+      "type": "object",
+      "description": "Artifact discovery configuration",
+      "required": ["search_roots", "artifact_types"],
+      "properties": {
+        "search_roots": {
+          "type": "array",
+          "description": "Ordered list of layer-relative paths to scan for artifacts",
+          "items": { "$ref": "#/definitions/layer_path" },
+          "minItems": 1
+        },
+        "artifact_types": {
+          "type": "array",
+          "description": "Artifact type codes to discover. Empty = no artifacts discovered.",
+          "items": {
+            "type": "string",
+            "enum": ["WF", "IN", "CC", "CT", "CS", "RB", "EV", "STRUCTURE", "VOCAB", "CONSTITUTION", "ASSERT", "INVARIANT", "SCHEMA", "TEST_DATA"]
+          }
+        }
+      }
+    },
+
+    "output_configuration": {
+      "type": "object",
+      "description": "Output path declarations for compiler and runtime outputs",
+      "properties": {
+        "build_manifest_path": { "$ref": "#/definitions/layer_path" },
+        "trace_output_path": { "$ref": "#/definitions/layer_path" },
+        "event_output_path": { "$ref": "#/definitions/layer_path" },
+        "log_output_path": { "$ref": "#/definitions/layer_path" },
+        "testbed_output_path": { "$ref": "#/definitions/layer_path" }
+      },
+      "additionalProperties": { "$ref": "#/definitions/layer_path" }
+    },
+
+    "structure_core_base": {
+      "type": "object",
+      "description": "Required core fields for all STRUCTURE artifact types",
+      "required": ["summary"],
+      "properties": {
+        "summary": {
+          "type": "string",
+          "description": "One-line description of what this STRUCTURE configures"
+        },
+        "description": {
+          "type": "string",
+          "description": "Extended explanation of scope and purpose"
+        }
+      }
+    }
+  },
+
+  "structure_types": {
+    "runtime_execution": {
+      "description": "Configures artifact discovery and output paths for runtime workflow execution",
+      "examples": ["STRUCTURE_RUNTIME_EXECUTION_V0", "STRUCTURE_RUNTIME_DEFAULT_V0"],
+      "required_fields": [
+        "artifact_discovery.search_roots",
+        "artifact_discovery.artifact_types",
+        "output_configuration.build_manifest_path",
+        "output_configuration.trace_output_path"
+      ]
+    },
+    "build_configuration": {
+      "description": "Configures compiler behavior and build workflows",
+      "examples": ["STRUCTURE_BUILD_PLATFORM_CONFIG_V0", "STRUCTURE_BUILD_DOMAINS_CONFIG_V0"],
+      "required_fields": [
+        "core.target_workflow",
+        "core.target_runtime_binding",
+        "artifact_discovery.search_layers",
+        "artifact_discovery.artifact_types",
+        "build_phases"
+      ]
+    },
+    "layer_authority": {
+      "description": "Defines layer identity, authority, and responsibilities",
+      "examples": ["STRUCTURE_LAYER_AUTHORITY_V0"],
+      "required_fields": [
+        "layers"
+      ]
+    },
+    "physical_binding": {
+      "description": "Maps logical layers to physical packages and module roots",
+      "examples": ["STRUCTURE_PHYSICAL_NODE_BINDING_V0"],
+      "required_fields": [
+        "bindings"
+      ]
+    },
+    "module_data_roots": {
+      "description": "Maps modules to data storage locations",
+      "examples": ["STRUCTURE_MODULE_DATA_ROOTS_V0"],
+      "required_fields": [
+        "module_roots"
+      ]
+    }
+  },
+
+  "machine_required_fields": {
+    "description": "Fields required in the Machine YAML section of every STRUCTURE artifact",
+    "fields": {
+      "structure_code": {
+        "type": "string",
+        "pattern": "^STRUCTURE_[A-Z0-9_]+_V[0-9]+$",
+        "description": "Unique identifier. MUST follow UPPER_SNAKE_CASE with version suffix."
+      },
+      "version": {
+        "type": "string",
+        "pattern": "^[Vv][0-9]+$",
+        "description": "Artifact version"
+      },
+      "governed_by": {
+        "type": "string",
+        "const": "fb.constitution::CONSTITUTION_STRUCTURE_V0",
+        "description": "MUST reference CONSTITUTION_STRUCTURE_V0 via FQDN"
+      }
+    }
+  },
+
+  "versioning_semantics": {
+    "breaking_changes": [
+      "Removing declared search roots",
+      "Removing declared output paths",
+      "Changing layer assignments for existing paths",
+      "Adding required fields to existing STRUCTURE types"
+    ],
+    "non_breaking_changes": [
+      "Adding new search roots",
+      "Adding new optional output paths",
+      "Adding optional fields"
+    ]
+  }
+}

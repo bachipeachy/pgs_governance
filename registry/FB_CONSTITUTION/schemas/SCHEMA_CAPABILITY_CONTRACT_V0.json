@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "omnibachi.governance.schemas.SCHEMA_CAPABILITY_CONTRACT_V0",
+  "title": "OmniBachi Capability Contract Schema V0",
+  "description": "JSON Schema for Capability Contract artifact frontmatter. Structural validation only — semantic routing correctness is governed by ASSERT_TOPOLOGY_* handlers.",
+  "type": "object",
+  "required": ["cc_code", "version", "governed_by", "core"],
+  "additionalProperties": false,
+  "properties": {
+    "cc_code": {
+      "type": "string",
+      "pattern": "^CC_[A-Z0-9_]+_V[0-9]+$",
+      "description": "Unique capability contract identifier"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[Vv][0-9]+$",
+      "description": "Version string"
+    },
+    "governed_by": {
+      "type": "string",
+      "description": "Governing constitution FQDN"
+    },
+    "core": {
+      "type": "object",
+      "required": ["pipeline", "inputs", "outputs"],
+      "additionalProperties": true,
+      "properties": {
+        "summary": {
+          "type": "string",
+          "description": "Human-readable summary"
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed description"
+        },
+        "inputs": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/fieldDef"
+          },
+          "description": "Input field definitions"
+        },
+        "outputs": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/fieldDef"
+          },
+          "description": "Output field definitions"
+        },
+        "result_status_contract": {
+          "type": "object",
+          "required": ["allowed"],
+          "properties": {
+            "allowed": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Allowed result status values"
+            },
+            "on_input_failure": {
+              "type": "string",
+              "description": "Result status when input validation fails"
+            }
+          }
+        },
+        "pipeline": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/pipelineStep" },
+          "description": "Execution topology steps"
+        }
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "fieldDef": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Field type name"
+        },
+        "required": {
+          "type": "boolean",
+          "default": false
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "pipelineStep": {
+      "type": "object",
+      "required": ["step", "inputs", "outputs", "result_surface", "on_result"],
+      "additionalProperties": true,
+      "properties": {
+        "step": {
+          "type": "string",
+          "description": "Unique step identifier within this CC pipeline"
+        },
+        "transform": {
+          "type": "string",
+          "description": "FQDN of the Capability Transform bound at this step. Exactly one of transform or side_effect must be present."
+        },
+        "side_effect": {
+          "type": "string",
+          "description": "FQDN of the Capability Side Effect bound at this step. Exactly one of transform or side_effect must be present."
+        },
+        "op": {
+          "type": "string",
+          "description": "Operation name to invoke on the bound capability"
+        },
+        "store": {
+          "type": "string",
+          "description": "Storage target identifier for side-effect steps"
+        },
+        "inputs": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "Input bindings. Values are JSONPath expressions or inline literals."
+        },
+        "outputs": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "Output bindings mapping capability result fields to step output fields"
+        },
+        "result_surface": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Declared set of status codes this step can produce"
+        },
+        "on_ct_result": {
+          "type": "object",
+          "required": ["on_success", "on_failure"],
+          "additionalProperties": false,
+          "properties": {
+            "on_success": {
+              "type": "string"
+            },
+            "on_failure": {
+              "type": "string"
+            }
+          }
+        },
+        "on_result": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Step routing map. Values are 'continue', 'exit', or an evaluation target name. Semantic correctness governed by ASSERT_TOPOLOGY_ROUTING_COMPLETE_V0."
+        }
+      }
+    }
+  }
+}

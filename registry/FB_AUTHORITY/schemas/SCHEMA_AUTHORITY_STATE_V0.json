@@ -1,0 +1,56 @@
+{
+  "schema_code": "SCHEMA_AUTHORITY_STATE_V0",
+  "artifact_kind": "SCHEMA",
+  "version": "V0",
+  "governed_by": "governance.authority::CONSTITUTION_AUTHORITY_GOVERNANCE_V0",
+  "description": "Schema for the authority state envelope — the resolved admissible execution authority passed forward once authority evaluation succeeds",
+  "fields": {
+    "actor_id": {
+      "type": "string",
+      "required": true,
+      "description": "Fully qualified identifier of the actor whose authority was evaluated"
+    },
+    "authenticated_actor_state": {
+      "type": "object",
+      "required": true,
+      "description": "Resolved authentication state for the actor; opaque to execution"
+    },
+    "authorized_workflows": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "fqdn"
+      },
+      "required": true,
+      "description": "List of workflow FQDNs the actor is authorized to invoke"
+    },
+    "visibility_scope": {
+      "type": "object",
+      "required": true,
+      "description": "Projection visibility constraints for the actor; governs what the actor may observe"
+    },
+    "trace_scope": {
+      "type": "object",
+      "required": true,
+      "description": "Trace visibility constraints for the actor; governs what trace data the actor may access"
+    },
+    "authority_provenance": {
+      "type": "object",
+      "required": true,
+      "description": "Provenance record for this authority state: source, timestamp, chain of authority",
+      "fields": {
+        "source": {
+          "type": "string",
+          "required": true,
+          "description": "Authority source identifier (e.g., authorization DB path or authority issuer)"
+        },
+        "evaluated_at": {
+          "type": "string",
+          "format": "iso8601",
+          "required": true,
+          "description": "Timestamp when authority was evaluated"
+        }
+      }
+    }
+  }
+}

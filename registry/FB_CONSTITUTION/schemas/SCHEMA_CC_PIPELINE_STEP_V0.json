@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "omnibachi.governance.schemas.SCHEMA_CC_PIPELINE_STEP_V0",
+  "title": "OmniBachi CC Pipeline Step Schema V0",
+  "description": "JSON Schema for a single execution topology step within a Capability Contract pipeline. Each step is self-describing: it declares its identity, capability reference, I/O contracts, and routing inline. No global binding registry. No implicit chaining.",
+  "type": "object",
+  "required": ["step", "op", "inputs", "outputs", "on_result"],
+  "additionalProperties": false,
+  "properties": {
+    "step": {
+      "type": "string",
+      "description": "Unique step identifier within this CC pipeline. Used as dataflow address in $.results.<step_id>.* references by downstream steps."
+    },
+    "transform": {
+      "type": "string",
+      "description": "FQDN of the Capability Transform (CT) bound at this step. Exactly one of transform or side_effect MUST be present."
+    },
+    "side_effect": {
+      "type": "string",
+      "description": "FQDN of the Capability Side Effect (CS) bound at this step. Exactly one of transform or side_effect MUST be present."
+    },
+    "op": {
+      "type": "string",
+      "description": "Operation name to invoke on the bound CT or CS artifact."
+    },
+    "inputs": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "description": "JSONPath expression. MUST reference $.inputs.* (CC-level input) or $.results.<step_id>.* (prior step output). No forward references. No ambient state."
+      },
+      "description": "Explicit input bindings for this step. All input sources must be declared."
+    },
+    "outputs": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "description": "JSONPath expression sourcing a field from the capability result ($.capability_result.*)."
+      },
+      "description": "Explicit output bindings mapping capability result fields to step output fields."
+    },
+    "on_ct_result": {
+      "type": "object",
+      "required": ["on_success", "on_failure"],
+      "additionalProperties": false,
+      "properties": {
+        "on_success": {
+          "type": "string",
+          "description": "Status code produced when the capability execution succeeds."
+        },
+        "on_failure": {
+          "type": "string",
+          "description": "Status code produced when the capability execution fails."
+        }
+      },
+      "description": "Maps the capability-level binary result (success/failure) to CC result status codes."
+    },
+    "on_result": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "enum": ["continue", "exit"],
+        "description": "Routing action: continue to next step or exit the CC with this status."
+      },
+      "description": "Step routing map. MUST contain an entry for every status code declared in the CC result_status_contract.allowed list. Values are exactly: continue or exit."
+    }
+  },
+  "oneOf": [
+    {
+      "required": ["transform"],
+      "properties": {
+        "side_effect": false
+      }
+    },
+    {
+      "required": ["side_effect"],
+      "properties": {
+        "transform": false
+      }
+    }
+  ],
+  "$comment": "TOPOLOGY INVARIANT: each step MUST reference exactly one capability (transform XOR side_effect). Both present or neither present are constitutional violations per INVARIANT_TOPOLOGY_CAPABILITY_REFERENCE_UNIQUE_V0."
+}
