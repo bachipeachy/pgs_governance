@@ -29,6 +29,10 @@
       "type": "string",
       "description": "FQDN of the structure artifact that governs this workflow's build configuration"
     },
+    "subdomain": {
+      "type": "string",
+      "description": "Subdomain within the workflow's namespace; used for trace and data path routing"
+    },
     "core": {
       "type": "object",
       "required": ["summary", "start_node", "nodes"],
