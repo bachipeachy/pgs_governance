@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "omnibachi.governance.schemas.SCHEMA_CC_PIPELINE_STEP_V0",
+  "$id": "pgs_governance.schemas.SCHEMA_CC_PIPELINE_STEP_V0",
   "title": "OmniBachi CC Pipeline Step Schema V0",
   "description": "JSON Schema for a single execution topology step within a Capability Contract pipeline. Each step is self-describing: it declares its identity, capability reference, I/O contracts, and routing inline. No global binding registry. No implicit chaining.",
   "type": "object",

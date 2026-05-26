@@ -32,7 +32,7 @@ class LayerResolver:
     No STRUCTURE_LAYER_AUTHORITY_V0 — that artifact is deleted.
 
     Usage:
-        from pgs_governance.structure.structure.resolution import LayerResolver
+        from pgs_governance.implementation.structure.resolution import LayerResolver
 
         resolver = LayerResolver()
         path = resolver.resolve_layer_root("GOVERNANCE")

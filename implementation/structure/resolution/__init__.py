@@ -8,8 +8,8 @@ Public API:
 - path_registry: Single source of truth for filesystem paths
 """
 
-from pgs_governance.structure.structure.resolution.layer_resolver import LayerResolver
-from pgs_governance.structure.structure.resolution.path_registry import (
+from pgs_governance.implementation.structure.resolution.layer_resolver import LayerResolver
+from pgs_governance.implementation.structure.resolution.path_registry import (
     bootstrap,
     paths,
 )

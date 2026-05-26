@@ -85,7 +85,7 @@ def extract_domain_from_artifact_path(artifact_path: Path) -> str:
     domain = extract_domain_from_path(artifact_path)
 
     if domain is None:
-        from pgs_governance.structure.structure.exceptions import DomainResolutionError
+        from pgs_governance.implementation.structure.exceptions import DomainResolutionError
         raise DomainResolutionError(
             message="Cannot extract domain from artifact path. "
                     "Domain artifacts MUST have domain resolved from source path. "

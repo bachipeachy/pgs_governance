@@ -16,7 +16,7 @@ import json
 from typing import List, Dict, Any
 
 # Import test case loading from structure
-from pgs_governance.structure.structure.loading.test_case_provider import (
+from pgs_governance.implementation.structure.loading.test_case_provider import (
     TestCase,
     load_test_cases,
     TestCaseLoadError,

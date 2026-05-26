@@ -31,7 +31,7 @@ from enum import Enum
 from abc import ABC, abstractmethod
 
 # CONSTITUTIONAL: Rely on proper package installation (no sys.path hacks)
-from pgs_governance.structure.structure.resolution import bootstrap, paths
+from pgs_governance.implementation.structure.resolution import bootstrap, paths
 
 bootstrap()
 

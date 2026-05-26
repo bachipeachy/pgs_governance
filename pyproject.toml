@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pgs-governance"
-version = "0.2.0"
+version = "0.3.0"
 description = "Protocol-Governed Systems — constitutional governance, federated boundaries, structural artifact definitions, and invariant enforcement"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -57,14 +57,11 @@ packages = [
   "pgs_governance.implementation.conformance.oracle",
   "pgs_governance.implementation.conformance.utils",
   "pgs_governance.implementation.constitution_validator",
-  "pgs_governance.implementation.vocabulary",
-  "pgs_governance.implementation.vocabulary.builder",
   "pgs_governance.registry",
-  "pgs_governance.structure",
-  "pgs_governance.structure.structure",
-  "pgs_governance.structure.structure.discovery",
-  "pgs_governance.structure.structure.loading",
-  "pgs_governance.structure.structure.resolution",
+  "pgs_governance.implementation.structure",
+  "pgs_governance.implementation.structure.discovery",
+  "pgs_governance.implementation.structure.loading",
+  "pgs_governance.implementation.structure.resolution",
 ]
 
 [tool.setuptools.package-dir]

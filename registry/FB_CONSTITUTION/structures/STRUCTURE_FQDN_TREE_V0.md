@@ -41,7 +41,7 @@ No implicit filesystem derivation is permitted.
 
 | Role | Description |
 |------|-------------|
-| `core` | Protocol infrastructure (omnibachi package) |
+| `core` | Protocol infrastructure (pgs_runtime package) |
 | `capability_pack` | Reusable capability implementations (atoms, molecules) |
 | `domain_pack` | Domain-specific workflows, contracts, intents |
 

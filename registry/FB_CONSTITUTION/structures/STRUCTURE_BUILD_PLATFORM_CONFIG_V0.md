@@ -82,11 +82,11 @@ artifact_discovery:
 
 output_configuration:
 
-  # Compiled artifacts (federated via layer_outputs below)
+  # Compiled canonical artifacts (federated via layer_outputs below)
   # Note: This is a fallback only; layer_outputs takes precedence
   artifacts:
     layer: PROTOCOL_BUILD_ROOT
-    subpath: compiled/artifacts
+    subpath: compiled/canonical
 
   # Conformance tests (federated to transforms layer where TEST_DATA lives)
   conformance:
@@ -94,46 +94,63 @@ output_configuration:
     subpath: compiled/conformance/ct
 
   # Vocabulary projection files (global system state)
-  vocabulary_artifacts_path:
+  vocabulary_projection_path:
     layer: GOVERNANCE
-    subpath: vocabulary
+    subpath: compiled/vocabulary
+
+  # Tokenized topology projection files
+  tokenized_projection_path:
+    layer: GOVERNANCE
+    subpath: compiled/tokenized
+
+  # Evidence projection files (dual-form observability substrate)
+  evidence_projection_path:
+    layer: GOVERNANCE
+    subpath: compiled/evidence
+
+  # Trust attestation (cryptographic binding of verified tokenized projection)
+  trust_attestation_path:
+    layer: GOVERNANCE
+    subpath: compiled/trust
+
+  # Visualization projection files
+  visualization_projection_path:
+    layer: GOVERNANCE
+    subpath: compiled/visualization
 
   # Federated layer outputs (each layer writes to its own repository)
   # PGS is 100% federated - artifacts are distributed to their source repositories
   layer_outputs:
     GOVERNANCE:
       layer: GOVERNANCE
-      subpath: compiled/artifacts
-    COMPILER:
-      layer: PROTOCOL_BUILD_ROOT
-      subpath: compiled/artifacts
+      subpath: compiled/canonical
     REUSABLE_TRANSFORMS:
       layer: REUSABLE_TRANSFORMS
-      subpath: compiled/artifacts
+      subpath: compiled/canonical
     REUSABLE_SIDE_EFFECTS:
       layer: REUSABLE_SIDE_EFFECTS
-      subpath: compiled/artifacts
+      subpath: compiled/canonical
     CAPABILITIES:
       layer: CAPABILITIES
-      subpath: compiled/artifacts
+      subpath: compiled/canonical
     TEST_DATA:
       layer: REUSABLE_TRANSFORMS
-      subpath: compiled/artifacts
+      subpath: compiled/canonical
     EXECUTION:
       layer: PROTOCOL_BUILD_ROOT
-      subpath: compiled/artifacts
+      subpath: compiled/canonical
     AUTHORING:
       layer: PROTOCOL_BUILD_ROOT
-      subpath: compiled/artifacts
+      subpath: compiled/canonical
     TRANSPORT:
       layer: PROTOCOL_BUILD_ROOT
-      subpath: compiled/artifacts
+      subpath: compiled/canonical
     INGRESS:
       layer: PROTOCOL_BUILD_ROOT
-      subpath: compiled/artifacts
+      subpath: compiled/canonical
     EGRESS:
       layer: PROTOCOL_BUILD_ROOT
-      subpath: compiled/artifacts
+      subpath: compiled/canonical
 
   # Bootstrap artifact discovery (minimal hardcoded paths)
   bootstrap_search_roots:

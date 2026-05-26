@@ -7,7 +7,7 @@ Public API:
 - artifact_locator: Discover and scan protocol artifacts
 """
 
-from pgs_governance.structure.structure.discovery.artifact_locator import (
+from pgs_governance.implementation.structure.discovery.artifact_locator import (
     iter_protocol_jsons,
     load_json_strict,
     extract_codes,

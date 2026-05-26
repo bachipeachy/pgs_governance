@@ -12,7 +12,7 @@ from typing import Any
 
 # Import LayerResolver for runtime path resolution
 try:
-    from pgs_governance.structure.structure.resolution.layer_resolver import LayerResolver
+    from pgs_governance.implementation.structure.resolution.layer_resolver import LayerResolver
     LAYER_RESOLVER_AVAILABLE = True
 except ImportError:
     LAYER_RESOLVER_AVAILABLE = False

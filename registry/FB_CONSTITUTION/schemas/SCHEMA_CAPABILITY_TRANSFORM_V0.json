@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "omnibachi.governance.schemas.SCHEMA_CAPABILITY_TRANSFORM_V0",
+  "$id": "pgs_governance.schemas.SCHEMA_CAPABILITY_TRANSFORM_V0",
   "title": "OmniBachi Capability Transform Schema V0",
   "description": "JSON Schema for Capability Transform artifact frontmatter. CT artifacts declare a core section (summary, I/O contracts) and a machine section (execution binding).",
   "type": "object",

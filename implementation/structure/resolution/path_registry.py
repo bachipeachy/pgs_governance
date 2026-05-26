@@ -2,7 +2,7 @@
 Canonical path registry: Single source of truth for ALL filesystem paths.
 
 Usage:
-    from pgs_governance.structure.structure.resolution import bootstrap, paths
+    from pgs_governance.implementation.structure.resolution import bootstrap, paths
 
     bootstrap(root=Path("/path/to/project"))
     wf = paths.protocol.artifact("workflows", "wf_create_wallet_v0.json")
@@ -14,7 +14,7 @@ import json
 from pathlib import Path
 from typing import Literal
 
-from pgs_governance.structure.structure.resolution.layer_resolver import LayerResolver, get_default_resolver
+from pgs_governance.implementation.structure.resolution.layer_resolver import LayerResolver, get_default_resolver
 
 # =============================================================================
 # Internal State
@@ -553,8 +553,8 @@ class GovernancePaths:
 
     def vocabulary_reserved_dir(self) -> Path:
         """Reserved vocabulary specs."""
-        gov_root = self._roots.governance
-        vocab_reserved = _get_layer_directory("vocabulary_reserved_subdir", "vocabulary/reserved")
+        gov_root = self._roots.governance  # pgs_governance/registry
+        vocab_reserved = _get_layer_directory("vocabulary_reserved_subdir", "FB_VOCABULARY/reserved")
         return gov_root / vocab_reserved
 
     def vocabulary_protocol_kinds(self) -> Path:
@@ -795,7 +795,7 @@ class AuthoringPaths:
 
         if parts[0] == "domains" and len(parts) >= 2:
             return f"domains.{parts[1]}"
-        elif parts[0] == "omnibachi" and len(parts) >= 2:
+        elif parts[0] == "pgs_governance" and len(parts) >= 2:
             return parts[1]
         else:
             return module_id
@@ -965,7 +965,7 @@ class PathRegistry:
         path_config = output_config[output_kind]
 
         if "layer" not in path_config:
-            from pgs_governance.structure.structure.exceptions import ProtocolIncompleteError
+            from pgs_governance.implementation.structure.exceptions import ProtocolIncompleteError
             structure_code = structure_artifact.get("structure_code") or structure_artifact.get("frontmatter", {}).get("structure_code", "UNKNOWN")
             raise ProtocolIncompleteError(
                 message=f"STRUCTURE '{structure_code}' output '{output_kind}' missing 'layer' field.",
@@ -978,14 +978,14 @@ class PathRegistry:
         subpath_template = path_config.get("subpath", "")
 
         if layer_code == "DOMAINS" and not domain:
-            from pgs_governance.structure.structure.exceptions import DomainResolutionError
+            from pgs_governance.implementation.structure.exceptions import DomainResolutionError
             raise DomainResolutionError(
                 message=f"DOMAINS layer requires domain parameter for '{output_kind}'.",
                 details={"output_kind": output_kind, "layer": layer_code}
             )
 
         if '{domain}' in subpath_template and not domain:
-            from pgs_governance.structure.structure.exceptions import ProtocolIncompleteError
+            from pgs_governance.implementation.structure.exceptions import ProtocolIncompleteError
             raise ProtocolIncompleteError(
                 message=f"Template '{subpath_template}' requires {{domain}} but not provided.",
                 details={"template": subpath_template, "output_kind": output_kind}
@@ -997,14 +997,14 @@ class PathRegistry:
             subpath = subpath_template
 
         if layer_code == "DOMAINS" and not subpath.startswith("domains/"):
-            from pgs_governance.structure.structure.exceptions import ProtocolIncompleteError
+            from pgs_governance.implementation.structure.exceptions import ProtocolIncompleteError
             raise ProtocolIncompleteError(
                 message=f"DOMAINS layer subpath must start with 'domains/', got: {subpath}",
                 details={"output_kind": output_kind, "subpath": subpath}
             )
 
         if ".." in subpath:
-            from pgs_governance.structure.structure.exceptions import StructuredError
+            from pgs_governance.implementation.structure.exceptions import StructuredError
             raise StructuredError(
                 code="CONSTITUTIONAL_VIOLATION",
                 message=f"Subpath '{output_kind}' contains '..' escape (layer isolation violation).",
@@ -1018,7 +1018,7 @@ class PathRegistry:
             parts = subpath.split("/", 2)
 
             if len(parts) < 3:
-                from pgs_governance.structure.structure.exceptions import StructuredError
+                from pgs_governance.implementation.structure.exceptions import StructuredError
                 raise StructuredError(
                     code="INVALID_SUBPATH",
                     message=f"Repo-relative subpath '{subpath}' incomplete. Expected 'domains/{{domain}}/{{path}}'.",
@@ -1029,7 +1029,7 @@ class PathRegistry:
             relative_subpath = parts[2]
 
             if domain and extracted_domain != domain:
-                from pgs_governance.structure.structure.exceptions import StructuredError
+                from pgs_governance.implementation.structure.exceptions import StructuredError
                 raise StructuredError(
                     code="DOMAIN_MISMATCH",
                     message=f"Subpath domain '{extracted_domain}' != artifact domain '{domain}'.",

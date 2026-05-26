@@ -40,14 +40,16 @@ def execute(artifacts: list[dict], compilation_context: dict) -> dict:
     asserts = {}
 
     # Collect INVARIANT and ASSERT artifacts
+    # Use artifact_code prefix (not artifact_type) because INVARIANT nodes
+    # are mapped to NodeKind.GOVERNANCE in the compiler graph and their
+    # projected artifact_type is "GOVERNANCE", not "INVARIANT".
     for artifact in artifacts:
         artifact_code = artifact.get("artifact_code", "")
-        artifact_type = artifact.get("artifact_type", "")
         fqdn = artifact.get("fqdn_id", "")
 
-        if artifact_type == "INVARIANT":
+        if artifact_code.startswith("INVARIANT_"):
             invariants[artifact_code] = fqdn
-        elif artifact_type == "ASSERT":
+        elif artifact_code.startswith("ASSERT_"):
             asserts[artifact_code] = fqdn
 
     # Extract base names (remove INVARIANT_/ASSERT_ prefix)

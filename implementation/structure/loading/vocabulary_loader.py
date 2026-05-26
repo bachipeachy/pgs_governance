@@ -17,8 +17,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, Callable
 
-from pgs_governance.structure.structure.loading.markdown_parser import extract_yaml_block
-from pgs_governance.structure.structure.loading.yaml_parser import parse_yaml_simple
+from pgs_governance.implementation.structure.loading.markdown_parser import extract_yaml_block
+from pgs_governance.implementation.structure.loading.yaml_parser import parse_yaml_simple
 
 
 # Type alias for file reader

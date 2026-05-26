@@ -74,6 +74,10 @@ from pgs_governance.implementation.assertions.handlers.assert_handler_registry_c
 from pgs_governance.implementation.assertions.handlers.assert_compiler_governance_declared_v0 import execute as assert_compiler_governance_declared_v0
 from pgs_governance.implementation.assertions.handlers.assert_compiler_no_execution_v0 import execute as assert_compiler_no_execution_v0
 from pgs_governance.implementation.assertions.handlers.assert_artifact_content_hash_declared_v0 import execute as assert_artifact_content_hash_declared_v0
+from pgs_governance.implementation.assertions.handlers.assert_topology_acyclic_v0 import execute as assert_topology_acyclic_v0
+from pgs_governance.implementation.assertions.handlers.assert_binding_integrity_v0 import execute as assert_binding_integrity_v0
+from pgs_governance.implementation.assertions.handlers.assert_implementation_admissible_v0 import execute as assert_implementation_admissible_v0
+from pgs_governance.implementation.assertions.handlers.assert_schema_conformance_v0 import execute as assert_schema_conformance_v0
 
 # Static handler registry (FQDN → callable)
 # This is the ONLY allowed way to resolve handlers
@@ -141,6 +145,10 @@ HANDLER_REGISTRY = {
     "pgs_governance.registry.handlers.assert_compiler_governance_declared_v0": assert_compiler_governance_declared_v0,
     "pgs_governance.registry.handlers.assert_compiler_no_execution_v0": assert_compiler_no_execution_v0,
     "pgs_governance.registry.handlers.assert_artifact_content_hash_declared_v0": assert_artifact_content_hash_declared_v0,
+    "pgs_governance.registry.handlers.assert_topology_acyclic_v0": assert_topology_acyclic_v0,
+    "pgs_governance.registry.handlers.assert_binding_integrity_v0": assert_binding_integrity_v0,
+    "pgs_governance.registry.handlers.assert_implementation_admissible_v0": assert_implementation_admissible_v0,
+    "pgs_governance.registry.handlers.assert_schema_conformance_v0": assert_schema_conformance_v0,
 }
 
 __all__ = ["HANDLER_REGISTRY"]

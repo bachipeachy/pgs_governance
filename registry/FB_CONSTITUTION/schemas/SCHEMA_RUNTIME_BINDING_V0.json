@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "omnibachi.governance.schemas.SCHEMA_RUNTIME_BINDING_V0",
+  "$id": "pgs_governance.schemas.SCHEMA_RUNTIME_BINDING_V0",
   "title": "OmniBachi Runtime Binding Schema V0",
   "description": "JSON Schema for materialized runtime binding artifacts. Structural validation only — semantic binding correctness governed by ASSERT_RB_* handlers.",
   "type": "object",

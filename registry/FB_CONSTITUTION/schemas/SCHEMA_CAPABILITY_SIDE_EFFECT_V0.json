@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "omnibachi.governance.schemas.SCHEMA_CAPABILITY_SIDE_EFFECT_V0",
+  "$id": "pgs_governance.schemas.SCHEMA_CAPABILITY_SIDE_EFFECT_V0",
   "title": "OmniBachi Capability Side Effect Schema V0",
   "description": "JSON Schema for materialized capability side effect artifacts. Structural validation only — semantic correctness governed by ASSERT_CS_* handlers.",
   "type": "object",

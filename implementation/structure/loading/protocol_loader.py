@@ -3,8 +3,8 @@ import os
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
-from pgs_governance.structure.structure.resolution.domain_resolver import extract_domain_from_artifact_path
-from pgs_governance.structure.structure.resolution.layer_resolver import LayerResolver
+from pgs_governance.implementation.structure.resolution.domain_resolver import extract_domain_from_artifact_path
+from pgs_governance.implementation.structure.resolution.layer_resolver import LayerResolver
 
 # ============================================================================
 # PROTOCOL LOADER

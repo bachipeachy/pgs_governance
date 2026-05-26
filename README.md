@@ -57,7 +57,7 @@ pgs_runtime         →  executes against compiled snapshot
 | Repo | Role |
 |------|------|
 | `pgs_workspace` | Entry point — snapshot + scripts |
-| `pgs_runtime` | Execution engine (omnibachi CLI) |
+| `pgs_runtime` | Execution engine (pgs_runtime CLI) |
 | `pgs_governance` | **This repo** — governance + structure |
 | `pgs_compiler` | Compiler pipeline + tooling |
 | `pgs_transport` | Ingress/egress adapters |

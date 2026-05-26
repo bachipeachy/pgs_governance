@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "omnibachi.governance.schemas.SCHEMA_CAPABILITY_CONTRACT_V0",
+  "$id": "pgs_governance.schemas.SCHEMA_CAPABILITY_CONTRACT_V0",
   "title": "OmniBachi Capability Contract Schema V0",
   "description": "JSON Schema for Capability Contract artifact frontmatter. Structural validation only — semantic routing correctness is governed by ASSERT_TOPOLOGY_* handlers.",
   "type": "object",

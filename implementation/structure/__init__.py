@@ -12,14 +12,14 @@ Public API organized by concern:
 - structure.resolution.*
 
 Quick imports for common use:
-- from pgs_governance.structure.structure.resolution import bootstrap, paths, LayerResolver
-- from pgs_governance.structure.structure.loading import load_trace, parse_yaml_simple
-- from pgs_governance.structure.structure.discovery import extract_codes, scan_artifacts_by_type
+- from pgs_governance.implementation.structure.resolution import bootstrap, paths, LayerResolver
+- from pgs_governance.implementation.structure.loading import load_trace, parse_yaml_simple
+- from pgs_governance.implementation.structure.discovery import extract_codes, scan_artifacts_by_type
 """
 
 # Re-export commonly used items for convenience
-from pgs_governance.structure.structure.resolution import bootstrap, paths, LayerResolver
-from pgs_governance.structure.structure.loading import (
+from pgs_governance.implementation.structure.resolution import bootstrap, paths, LayerResolver
+from pgs_governance.implementation.structure.loading import (
     ProtocolFSReader,
     ProtocolLoader,
     load_trace,
@@ -28,7 +28,7 @@ from pgs_governance.structure.structure.loading import (
     parse_yaml_simple,
     load_vocabulary_md,
 )
-from pgs_governance.structure.structure.discovery import (
+from pgs_governance.implementation.structure.discovery import (
     extract_codes,
     extract_wf_codes,
     extract_in_codes,

@@ -9,8 +9,8 @@ import re
 from pathlib import Path
 from typing import Any
 
-from pgs_governance.structure.structure.resolution.layer_resolver import LayerResolver
-from pgs_governance.structure.structure.resolution.path_registry import bootstrap
+from pgs_governance.implementation.structure.resolution.layer_resolver import LayerResolver
+from pgs_governance.implementation.structure.resolution.path_registry import bootstrap
 
 
 def execute(artifacts: list[dict], compilation_context: dict) -> dict:

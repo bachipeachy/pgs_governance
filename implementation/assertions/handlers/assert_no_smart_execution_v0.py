@@ -8,8 +8,8 @@ import re
 from pathlib import Path
 from typing import Any
 
-from pgs_governance.structure.structure.resolution.layer_resolver import LayerResolver
-from pgs_governance.structure.structure.resolution.path_registry import bootstrap, paths
+from pgs_governance.implementation.structure.resolution.layer_resolver import LayerResolver
+from pgs_governance.implementation.structure.resolution.path_registry import bootstrap, paths
 
 
 def execute(artifacts: list[dict], compilation_context: dict) -> dict:

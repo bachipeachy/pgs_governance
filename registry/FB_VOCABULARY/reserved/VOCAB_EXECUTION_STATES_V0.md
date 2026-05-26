@@ -1,7 +1,7 @@
 # VOCAB_EXECUTION_STATES_V0 — Execution Semantics
 
 **Governance Header**
-- Vocabulary ID: VOCAB_EXECUTION_STATES_V0
+- Vocabulary ID: fb.vocabulary::VOCAB_EXECUTION_STATES_V0
 - Version: v0
 - Governed By: fb.vocabulary::CONSTITUTION_VOCABULARY_V0
 - Status: Active
@@ -35,7 +35,7 @@ Defines execution outcome symbols: result statuses for node-level outcomes and e
 ## Machine
 
 ```yaml
-vocab_id: VOCAB_EXECUTION_STATES_V0
+vocabulary_id: fb.vocabulary::VOCAB_EXECUTION_STATES_V0
 version: v0
 governed_by: fb.vocabulary::CONSTITUTION_VOCABULARY_V0
 

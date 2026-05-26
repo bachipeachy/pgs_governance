@@ -53,32 +53,32 @@ core:
 artifact_source_dirs:
   capability_transforms:
     - layer: REUSABLE_TRANSFORMS
-      subpath: compiled/artifacts/capability_transforms
+      subpath: compiled/canonical/capability_transforms
 
   capability_side_effects:
     - layer: REUSABLE_SIDE_EFFECTS
-      subpath: compiled/artifacts/capability_side_effects
+      subpath: compiled/canonical/capability_side_effects
 
   capability_contracts:
     - layer: CAPABILITIES
-      subpath: compiled/artifacts/capability_contracts
+      subpath: compiled/canonical/capability_contracts
 
   workflows:
     - layer: BLOCKCHAIN
-      subpath: compiled/artifacts/workflows
+      subpath: compiled/canonical/workflows
     - layer: AI_GOVERNANCE
-      subpath: compiled/artifacts/workflows
+      subpath: compiled/canonical/workflows
 
   intents:
     - layer: BLOCKCHAIN
-      subpath: compiled/artifacts/intents
+      subpath: compiled/canonical/intents
     - layer: AI_GOVERNANCE
-      subpath: compiled/artifacts/intents
+      subpath: compiled/canonical/intents
 
 output_configuration:
-  vocabulary_artifacts_path:
+  vocabulary_projection_path:
     layer: GOVERNANCE
-    subpath: vocabulary
+    subpath: compiled/vocabulary
 ```
 
 ---

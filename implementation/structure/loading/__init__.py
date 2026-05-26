@@ -19,34 +19,34 @@ ARCHITECTURAL BOUNDARY:
 No component should implement file I/O or parsing outside this package.
 """
 
-from pgs_governance.structure.structure.loading.fs_reader import ProtocolFSReader
-from pgs_governance.structure.structure.loading.protocol_loader import ProtocolLoader
-from pgs_governance.structure.structure.loading.trace_reader import (
+from pgs_governance.implementation.structure.loading.fs_reader import ProtocolFSReader
+from pgs_governance.implementation.structure.loading.protocol_loader import ProtocolLoader
+from pgs_governance.implementation.structure.loading.trace_reader import (
     TraceLoadError,
     load_trace,
     load_trace_safe,
 )
-from pgs_governance.structure.structure.loading.test_case_provider import (
+from pgs_governance.implementation.structure.loading.test_case_provider import (
     TestCase,
     TestCaseLoadError,
     load_test_cases,
     load_test_cases_safe,
 )
-from pgs_governance.structure.structure.loading.markdown_parser import (
+from pgs_governance.implementation.structure.loading.markdown_parser import (
     MarkdownParseError,
     extract_yaml_block,
     extract_yaml_block_from_file,
     extract_frontmatter,
     split_frontmatter_and_body,
 )
-from pgs_governance.structure.structure.loading.yaml_parser import (
+from pgs_governance.implementation.structure.loading.yaml_parser import (
     YAMLParseError,
     parse_yaml_simple,
     parse_yaml_to_dict,
     extract_metadata,
     extract_categories,
 )
-from pgs_governance.structure.structure.loading.vocabulary_loader import (
+from pgs_governance.implementation.structure.loading.vocabulary_loader import (
     VocabularyCategory,
     VocabularyEntry,
     VocabularyLoadResult,

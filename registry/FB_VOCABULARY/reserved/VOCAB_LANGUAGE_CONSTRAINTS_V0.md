@@ -1,7 +1,7 @@
 # VOCAB_LANGUAGE_CONSTRAINTS_V0 — Authoring Law
 
 **Governance Header**
-- Vocabulary ID: VOCAB_LANGUAGE_CONSTRAINTS_V0
+- Vocabulary ID: fb.vocabulary::VOCAB_LANGUAGE_CONSTRAINTS_V0
 - Version: v0
 - Governed By: fb.vocabulary::CONSTITUTION_VOCABULARY_V0
 - Status: Active
@@ -39,7 +39,7 @@ Defines words constrained during artifact authoring: structural keys, binding ve
 ## Machine
 
 ```yaml
-vocab_id: VOCAB_LANGUAGE_CONSTRAINTS_V0
+vocabulary_id: fb.vocabulary::VOCAB_LANGUAGE_CONSTRAINTS_V0
 version: v0
 governed_by: fb.vocabulary::CONSTITUTION_VOCABULARY_V0
 
@@ -152,7 +152,4 @@ forbidden_language:
     - TERM
     - TERMINAL
     - TERMINATE
-    - NEXT_STEP
-    - CONDITIONAL
-    - FLOW
 ```

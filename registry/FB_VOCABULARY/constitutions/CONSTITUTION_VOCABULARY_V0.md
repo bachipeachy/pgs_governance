@@ -91,7 +91,7 @@ This constitution does not govern:
 
 Reserved words are declared in:
 ```
-omnibachi/governance/vocabulary/reserved/{namespace}.txt
+pgs_governance/governance/vocabulary/reserved/{namespace}.txt
 ```
 
 ### 3.2 Reserved Word Immutability
@@ -171,7 +171,7 @@ The version suffix (_V0, _V1, ...) is:
 
 Vocabulary files are located at:
 ```
-omnibachi/governance/vocabulary/reserved/{namespace}.txt
+pgs_governance/governance/vocabulary/reserved/{namespace}.txt
 ```
 
 ### 6.2 Vocabulary Changes
@@ -221,7 +221,7 @@ CT_OLD_TRANSFORM_V0
 
 The semantic index is located at:
 ```
-omnibachi/governance/vocabulary/vocabulary_semantic_index.json
+pgs_governance/governance/vocabulary/vocabulary_semantic_index.json
 ```
 
 ### 8.2 Index Purpose

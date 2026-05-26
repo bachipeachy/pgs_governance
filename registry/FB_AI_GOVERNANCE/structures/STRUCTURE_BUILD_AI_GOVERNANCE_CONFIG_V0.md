@@ -74,19 +74,19 @@ output_configuration:
   layer_outputs:
     GOVERNANCE:
       layer: GOVERNANCE
-      subpath: compiled/artifacts
+      subpath: compiled/canonical
     REUSABLE_TRANSFORMS:
       layer: REUSABLE_TRANSFORMS
-      subpath: compiled/artifacts
+      subpath: compiled/canonical
     REUSABLE_SIDE_EFFECTS:
       layer: REUSABLE_SIDE_EFFECTS
-      subpath: compiled/artifacts
+      subpath: compiled/canonical
     CAPABILITIES:
       layer: CAPABILITIES
-      subpath: compiled/artifacts
+      subpath: compiled/canonical
     AI_GOVERNANCE:
       layer: AI_GOVERNANCE
-      subpath: compiled/artifacts
+      subpath: compiled/canonical
 
   trace_logs_path:
     layer: EXECUTION
@@ -95,6 +95,26 @@ output_configuration:
   conformance:
     layer: REUSABLE_TRANSFORMS
     subpath: compiled/conformance/ct
+
+  vocabulary_projection_path:
+    layer: AI_GOVERNANCE
+    subpath: compiled/vocabulary
+
+  tokenized_projection_path:
+    layer: AI_GOVERNANCE
+    subpath: compiled/tokenized
+
+  evidence_projection_path:
+    layer: AI_GOVERNANCE
+    subpath: compiled/evidence
+
+  trust_attestation_path:
+    layer: AI_GOVERNANCE
+    subpath: compiled/trust
+
+  visualization_projection_path:
+    layer: AI_GOVERNANCE
+    subpath: compiled/visualization
 
 build_phases:
   - phase: discover

@@ -236,7 +236,7 @@ def _get_side_effects_implementation_root() -> Path:
     REUSABLE_SIDE_EFFECTS registry_module resolves to pgs_side_effects/registry/.
     Implementation lives at the sibling path: pgs_side_effects/implementation/side_effects/.
     """
-    from pgs_governance.structure.structure.resolution.layer_resolver import LayerResolver
+    from pgs_governance.implementation.structure.resolution.layer_resolver import LayerResolver
     resolver = LayerResolver()
     registry_root = resolver.resolve_layer_root("REUSABLE_SIDE_EFFECTS")
     # registry_root = .../pgs_side_effects/registry/
