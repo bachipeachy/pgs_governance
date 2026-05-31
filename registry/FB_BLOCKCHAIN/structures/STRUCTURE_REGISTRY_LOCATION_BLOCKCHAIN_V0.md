@@ -27,12 +27,13 @@ core:
 
   description: >
     Blockchain domain artifacts with hierarchical subdomain structure:
-    identity, transaction, wallet.
+    identity, transaction, wallet, consensus_pos.
 
   subdomains:
     - identity
     - transaction
     - wallet
+    - consensus_pos
 
 invariants:
   - no_cross_subdomain_imports: true
@@ -66,6 +67,11 @@ output_configuration:
 - **FQDN Pattern**: `blockchain.wallet::ARTIFACT_CODE`
 - **Registry Module**: `pgs_blockchain.registry.wallet`
 - **Responsibilities**: Wallet creation, key management
+
+### Consensus PoS Subdomain
+- **FQDN Pattern**: `blockchain.consensus_pos::ARTIFACT_CODE`
+- **Registry Module**: `pgs_blockchain.registry.consensus_pos`
+- **Responsibilities**: Proof-of-Stake validator registration, lifecycle management
 
 ---
 
