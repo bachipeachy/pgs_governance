@@ -807,15 +807,6 @@ class AuthoringPaths:
         return self.testbed_module(module_name) / "data"
 
 
-    # --- Visualization ---
-
-    def visualization_root(self) -> Path:
-        return self._roots.authoring / "visualization"
-
-
-    def visualizer_script(self) -> Path:
-        return self.visualization_root() / "visualize.py"
-
     # --- Compilers ---
 
     def compiler_root(self) -> Path:

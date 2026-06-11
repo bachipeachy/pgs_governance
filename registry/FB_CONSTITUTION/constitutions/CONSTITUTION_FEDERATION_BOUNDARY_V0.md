@@ -84,6 +84,20 @@ rules:
       The only valid justification for a new boundary is a new distinct semantic governance
       authority that cannot be expressed within existing boundaries.
     enforced_by: PROCESS_ENFORCED
+
+  - rule_id: BOUNDARY_ONBOARDING_REQUIRED
+    applies_to: federation_boundary
+    constraint: >
+      Every new FB_* introduced into PGS MUST complete four onboarding steps before
+      the boundary is considered compiler-admissible: (1) governance registration —
+      directory created under pgs_governance/registry/FB_*/; (2) namespace derivation rule
+      declared in STRUCTURE_IDENTITY_V0 mapping the registry module path to a fb.*
+      namespace; (3) all governed artifacts within the boundary contain a valid ## Machine
+      declaration parseable by S1_EXTRACT; (4) governance compilation succeeds without
+      errors for all affected build structures. Omitting any step is a constitutional
+      violation — the compiler will fail with E901 or E101 and the boundary is not
+      admissible until all steps are satisfied.
+    enforced_by: PROCESS_ENFORCED
 ```
 
 ---
@@ -163,7 +177,7 @@ A distinct governance authority exists when a named set of protocol semantics:
 
 ## §3. Open-Ended vs Closed Structures
 
-Federation boundaries are **open-ended**. The current set (FB_CONSTITUTION, FB_TOPOLOGY, FB_TRANSPORT, FB_AUTHORITY, FB_VOCABULARY, FB_CONFORMANCE, FB_IDENTITY, FB_BLOCKCHAIN, FB_AI_GOVERNANCE) is not fixed. New boundaries emerge as distinct governance authorities emerge.
+Federation boundaries are **open-ended**. The current set (FB_CONSTITUTION, FB_TOPOLOGY, FB_TRANSPORT, FB_AUTHORITY, FB_VOCABULARY, FB_CONFORMANCE, FB_IDENTITY, FB_BLOCKCHAIN, FB_AI_GOVERNANCE, FB_CHANGE_MGMT) is not fixed. New boundaries emerge as distinct governance authorities emerge.
 
 This contrasts with:
 
@@ -291,8 +305,9 @@ As of V0, the declared federation boundaries are:
 | FB_IDENTITY | Delegated | Actor identity semantics, identity/authority separation |
 | FB_BLOCKCHAIN | Delegated | Blockchain domain build configuration |
 | FB_AI_GOVERNANCE | Delegated | AI governance domain build configuration |
+| FB_CHANGE_MGMT | Delegated | Governed SDLC change management pipeline — Change Request through Authoring Manifest |
 
-Note: FB_BLOCKCHAIN and FB_AI_GOVERNANCE currently contain only build configuration structures. They represent domain boundaries within pgs_governance's build system. Domain-specific governance laws for these domains reside in their respective domain repositories.
+Note: FB_BLOCKCHAIN and FB_AI_GOVERNANCE currently contain only build configuration structures. They represent domain boundaries within pgs_governance's build system. Domain-specific governance laws for these domains reside in their respective domain repositories. FB_CHANGE_MGMT governs the protocol authoring lifecycle itself — the governed pipeline from human intent to admissible protocol artifact.
 
 ---
 

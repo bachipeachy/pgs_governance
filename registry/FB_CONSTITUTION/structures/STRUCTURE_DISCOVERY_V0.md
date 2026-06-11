@@ -80,6 +80,7 @@ discovery:
       allowed_domains:
         - ai_licensing
         - agent_governance
+        - agent_admission
 
     TEST_DATA:
       registry_module: pgs_transforms.testbed.ct_test_data

@@ -62,6 +62,8 @@ identity:
             namespace: "fb.security_domain"
           - match: "pgs_governance.registry.FB_CRYPTOGRAPHIC_TRUST"
             namespace: "fb.cryptographic_trust"
+          - match: "pgs_governance.registry.FB_CHANGE_MGMT"
+            namespace: "fb.change_mgmt"
 
           # Reusable layers
           - match: "pgs_transforms"

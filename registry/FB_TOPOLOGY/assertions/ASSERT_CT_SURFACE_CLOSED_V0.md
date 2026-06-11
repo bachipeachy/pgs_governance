@@ -32,6 +32,7 @@ allowed_capability_transforms:
   - capability_transforms::CT_PURE_ENTROPY_TO_MNEMONIC_V0
   - capability_transforms::CT_PURE_EVALUATE_INACTIVITY_V0
   - capability_transforms::CT_PURE_EXTRACT_V0
+  - capability_transforms::CT_PURE_FILTER_RECORDS_V0
   - capability_transforms::CT_PURE_GENERATE_ENTROPY_V0
   - capability_transforms::CT_PURE_GENERATE_ID_V0
   - capability_transforms::CT_PURE_KECCAK256_HASH_V0

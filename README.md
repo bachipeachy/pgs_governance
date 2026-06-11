@@ -6,7 +6,7 @@ This repository defines what the system is *allowed to be* — the boundary cond
 
 No system behavior is permitted outside what is declared and validated here.
 
-> **New to PGS?** This is one of eight repositories in the Protocol-Governed Systems ecosystem.
+> **New to PGS?** This is one of the repositories in the Protocol-Governed Systems ecosystem.
 > For orientation, architecture overview, and end-to-end execution, start at [pgs_workspace](https://github.com/bachipeachy/pgs_workspace).
 
 ---
@@ -64,3 +64,4 @@ pgs_runtime         →  executes against compiled snapshot
 | `pgs_capabilities` | CT/CS implementations |
 | `pgs_blockchain` | Blockchain domain |
 | `pgs_ai_governance` | AI governance domain |
+| `pgs_change_mgmt` | Governed SDLC — Change Request to Authoring Mandate (new in v0.5.0) |

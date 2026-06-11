@@ -19,10 +19,12 @@ implementation:
 
 allowed_capability_side_effects:
   - capability_side_effects::CS_APPENDONLY_JSONL_V0
+  - capability_side_effects::CS_CONCURRENT_WORKFLOWS_V0
   - capability_side_effects::CS_MUTABLE_JSON_V0
   - capability_side_effects::CS_REGISTRY_V0
   - capability_side_effects::CS_SEND_EMAIL_V0
   - capability_side_effects::CS_WORKFLOW_GATEWAY_V0
+  - capability_side_effects::CS_WORKFLOW_LOOP_V0
   - pgs_capabilities.registry.name_service.capability_side_effects::CS_NAME_REGISTRY_V0
 ```
 
