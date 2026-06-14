@@ -52,6 +52,14 @@ pgs_runtime         →  executes against compiled snapshot
 
 ---
 
+## Doctrine
+
+| Note | Covers |
+|------|--------|
+| [`doc/rule_ownership.md`](doc/rule_ownership.md) | Rule Ownership Principle (artifacts own rules, the compiler owns the evaluating mechanism), the corollary that an artifact must be evaluated from itself, and the distinction between compile-time structural and runtime business invariants |
+
+---
+
 ## Part of the PGS ecosystem
 
 | Repo | Role |

@@ -28,24 +28,40 @@ def execute(artifacts: list[dict], compilation_context: dict) -> dict:
     """
     violations = []
 
-    # Get allowed CS list from ASSERT artifact itself
-    # The ASSERT artifact is passed via compilation_context during execution
-    # We'll extract it from artifacts by finding the ASSERT_CS_SURFACE_CLOSED_V0 artifact
+    # Get layer category map from compilation context (STRUCTURE-driven)
+    layer_category_map = compilation_context.get("layer_category_map", {})
 
-    assert_artifact = None
-    for artifact in artifacts:
-        frontmatter = artifact.get("frontmatter", {})
-        artifact_code = frontmatter.get("artifact_code")
-        if artifact_code == "ASSERT_CS_SURFACE_CLOSED_V0":
-            assert_artifact = artifact
-            break
-
-    if not assert_artifact:
-        # Fallback: empty allowed list (will flag all CS as violations)
-        allowed_cs = set()
+    # Evaluate the rule FROM the artifact being asserted.
+    # The compiler is a generic evaluator: it reads the allowed surface and the
+    # scope from the current ASSERT artifact itself, never substituting another
+    # (e.g. platform) artifact. This keeps every surface-closure ASSERT
+    # authoritative — a domain ASSERT governs its own domain surface.
+    current_assert = compilation_context.get("current_assert_artifact")
+    if current_assert:
+        assert_fm = current_assert.get("frontmatter", {})
     else:
-        frontmatter = assert_artifact.get("frontmatter", {})
-        allowed_cs = set(frontmatter.get("allowed_capability_side_effects", []))
+        # Defensive fallback: locate this handler's platform assert by code.
+        assert_fm = {}
+        for artifact in artifacts:
+            if artifact.get("frontmatter", {}).get("artifact_code") == "ASSERT_CS_SURFACE_CLOSED_V0":
+                assert_fm = artifact.get("frontmatter", {})
+                break
+
+    allowed_cs = set(assert_fm.get("allowed_capability_side_effects", []))
+    scope = set(assert_fm.get("scope", {}).get("applies_to", []))
+
+    def _in_scope(cs_artifact: dict) -> bool:
+        """A CS is governed by this ASSERT if its layer matches the ASSERT scope.
+
+        Domain scope (e.g. BLOCKCHAIN) matches the CS's layer_code directly.
+        PLATFORM scope matches any CS whose layer is a platform layer.
+        """
+        layer_code = cs_artifact.get("layer_code")
+        if layer_code in scope:
+            return True
+        if "PLATFORM" in scope and layer_category_map.get(layer_code) == "platform":
+            return True
+        return False
 
     # Extract all discovered CS artifacts
     # Note: CS artifacts may have artifact_kind="capability_side_effect" OR cs_code field
@@ -72,35 +88,30 @@ def execute(artifacts: list[dict], compilation_context: dict) -> dict:
             discovered_cs.add(fqdn)
             cs_artifacts.append(artifact)
 
-    # CHECK 1: No Undeclared CS (PLATFORM ONLY)
-    # All discovered PLATFORM CS must be in allowed list
-    # Domain CS are automatically valid if bound in RB
-    for cs_fqdn in discovered_cs:
-        # Find the artifact to check its layer
-        cs_artifact = next((a for a in cs_artifacts if a["fqdn_id"] == cs_fqdn), None)
-
-        if cs_artifact:
-            # Skip domain artifacts - they're validated by RB binding check
-            is_domain = cs_artifact.get("domain_name") is not None
-            if is_domain:
-                continue
-
-        # Platform CS must be in allowed list
+    # CHECK 1: No Undeclared CS (within this ASSERT's scope)
+    # Every discovered CS governed by this ASSERT must be explicitly declared in
+    # its allowed list. There is no intrinsic-by-existence exemption: closure is
+    # enforced from the artifact, for platform and domain surfaces alike.
+    assert_code = assert_fm.get("artifact_code", "the ASSERT artifact")
+    for cs_artifact in cs_artifacts:
+        if not _in_scope(cs_artifact):
+            continue
+        cs_fqdn = cs_artifact["fqdn_id"]
         if cs_fqdn not in allowed_cs:
             violations.append({
                 "fqdn": cs_fqdn,
                 "rule": "governance.layers::INVARIANT_CS_SURFACE_CLOSED_V0",
-                "message": "Undeclared platform CS (exists in registry but not in allowed list)",
-                "fix": f"Add '{cs_fqdn}' to allowed_capability_side_effects in ASSERT_CS_SURFACE_CLOSED_V0"
+                "message": "Undeclared CS (exists in registry but not in allowed_capability_side_effects)",
+                "fix": f"Add '{cs_fqdn}' to allowed_capability_side_effects in {assert_code}"
             })
 
-    # CHECK 2: No Excess Declarations (SKIP FOR DOMAIN BUILDS)
-    # All declared CS must be discovered (platform build only)
-    # Domain builds may not discover all platform CS - this is expected
-    # Skip this check if any domain artifacts are present
-    has_domain_artifacts = any(a.get("domain_name") for a in artifacts)
+    # CHECK 2: No Excess Declarations
+    # Every declared CS must be discovered. Skipped only for a PLATFORM-scoped
+    # ASSERT during a domain build, where platform CS are legitimately absent.
+    is_domain_build = compilation_context.get("is_domain_build", False)
+    skip_excess = is_domain_build and "PLATFORM" in scope
 
-    if not has_domain_artifacts:
+    if not skip_excess:
         for allowed_fqdn in allowed_cs:
             if allowed_fqdn not in discovered_cs:
                 violations.append({
@@ -117,6 +128,8 @@ def execute(artifacts: list[dict], compilation_context: dict) -> dict:
     rb_bound_cs = _extract_rb_bindings(artifacts)
 
     for artifact in cs_artifacts:
+        if not _in_scope(artifact):
+            continue
         fqdn = artifact["fqdn_id"]
         cs_code = artifact.get("frontmatter", {}).get("cs_code")
 

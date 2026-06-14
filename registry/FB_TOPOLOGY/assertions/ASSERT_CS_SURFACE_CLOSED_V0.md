@@ -13,6 +13,10 @@ version: 0
 governed_by:
   - fb.topology::INVARIANT_CS_SURFACE_CLOSED_V0
 
+scope:
+  applies_to:
+    - PLATFORM
+
 implementation:
   module: pgs_governance.registry.handlers.assert_cs_surface_closed_v0
   callable: execute

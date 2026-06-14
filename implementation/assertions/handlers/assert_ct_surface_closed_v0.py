@@ -38,21 +38,37 @@ def execute(artifacts: list[dict], compilation_context: dict) -> dict:
     # Get layer category map from compilation context (STRUCTURE-driven)
     layer_category_map = compilation_context.get("layer_category_map", {})
 
-    # Get allowed CT list from ASSERT artifact itself
-    assert_artifact = None
-    for artifact in artifacts:
-        frontmatter = artifact.get("frontmatter", {})
-        artifact_code = frontmatter.get("artifact_code")
-        if artifact_code == "ASSERT_CT_SURFACE_CLOSED_V0":
-            assert_artifact = artifact
-            break
-
-    if not assert_artifact:
-        # Fallback: empty allowed list (will flag all CT as violations)
-        allowed_ct = set()
+    # Evaluate the rule FROM the artifact being asserted.
+    # The compiler is a generic evaluator: it reads the allowed surface and the
+    # scope from the current ASSERT artifact itself, never substituting another
+    # (e.g. platform) artifact. This keeps every surface-closure ASSERT
+    # authoritative — a domain ASSERT governs its own domain surface.
+    current_assert = compilation_context.get("current_assert_artifact")
+    if current_assert:
+        assert_fm = current_assert.get("frontmatter", {})
     else:
-        frontmatter = assert_artifact.get("frontmatter", {})
-        allowed_ct = set(frontmatter.get("allowed_capability_transforms", []))
+        # Defensive fallback: locate this handler's platform assert by code.
+        assert_fm = {}
+        for artifact in artifacts:
+            if artifact.get("frontmatter", {}).get("artifact_code") == "ASSERT_CT_SURFACE_CLOSED_V0":
+                assert_fm = artifact.get("frontmatter", {})
+                break
+
+    allowed_ct = set(assert_fm.get("allowed_capability_transforms", []))
+    scope = set(assert_fm.get("scope", {}).get("applies_to", []))
+
+    def _in_scope(ct_artifact: dict) -> bool:
+        """A CT is governed by this ASSERT if its layer matches the ASSERT scope.
+
+        Domain scope (e.g. BLOCKCHAIN) matches the CT's layer_code directly.
+        PLATFORM scope matches any CT whose layer is a platform layer.
+        """
+        layer_code = ct_artifact.get("layer_code")
+        if layer_code in scope:
+            return True
+        if "PLATFORM" in scope and layer_category_map.get(layer_code) == "platform":
+            return True
+        return False
 
     # Extract all discovered CT artifacts
     # Note: CT artifacts may have artifact_kind="atom"/"molecule" OR ct_code field
@@ -78,37 +94,30 @@ def execute(artifacts: list[dict], compilation_context: dict) -> dict:
             discovered_ct.add(fqdn)
             ct_artifacts.append(artifact)
 
-    # CHECK 1: No Undeclared CT (PLATFORM ONLY)
-    # All discovered PLATFORM CT must be in allowed list
-    # Domain CT are automatically valid if they exist in registry (intrinsic resolution)
-    for ct_fqdn in discovered_ct:
-        # Find the artifact to check its layer
-        ct_artifact = next((a for a in ct_artifacts if a["fqdn_id"] == ct_fqdn), None)
-
-        if ct_artifact:
-            # Skip domain artifacts - they're validated by existence (discovery)
-            # Domain detection: check layer_category from STRUCTURE
-            layer_code = ct_artifact.get("layer_code")
-            is_domain = layer_category_map.get(layer_code) == "domain"
-            if is_domain:
-                continue
-
-        # Platform CT must be in allowed list
+    # CHECK 1: No Undeclared CT (within this ASSERT's scope)
+    # Every discovered CT governed by this ASSERT must be explicitly declared in
+    # its allowed list. There is no intrinsic-by-existence exemption: closure is
+    # enforced from the artifact, for platform and domain surfaces alike.
+    assert_code = assert_fm.get("artifact_code", "the ASSERT artifact")
+    for ct_artifact in ct_artifacts:
+        if not _in_scope(ct_artifact):
+            continue
+        ct_fqdn = ct_artifact["fqdn_id"]
         if ct_fqdn not in allowed_ct:
             violations.append({
                 "fqdn": ct_fqdn,
                 "rule": "governance.layers::INVARIANT_CT_SURFACE_CLOSED_V0",
-                "message": "Undeclared platform CT (exists in registry but not in allowed list)",
-                "fix": f"Add '{ct_fqdn}' to allowed_capability_transforms in ASSERT_CT_SURFACE_CLOSED_V0"
+                "message": "Undeclared CT (exists in registry but not in allowed_capability_transforms)",
+                "fix": f"Add '{ct_fqdn}' to allowed_capability_transforms in {assert_code}"
             })
 
-    # CHECK 2: No Excess Declarations (SKIP FOR DOMAIN BUILDS)
-    # All declared CT must be discovered (platform build only)
-    # Domain builds may not discover all platform CT - this is expected
-    # Skip this check if this is a domain build
+    # CHECK 2: No Excess Declarations
+    # Every declared CT must be discovered. Skipped only for a PLATFORM-scoped
+    # ASSERT during a domain build, where platform CT are legitimately absent.
     is_domain_build = compilation_context.get("is_domain_build", False)
+    skip_excess = is_domain_build and "PLATFORM" in scope
 
-    if not is_domain_build:
+    if not skip_excess:
         for allowed_fqdn in allowed_ct:
             if allowed_fqdn not in discovered_ct:
                 violations.append({
