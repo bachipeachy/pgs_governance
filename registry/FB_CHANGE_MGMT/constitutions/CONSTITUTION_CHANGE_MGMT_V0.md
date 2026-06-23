@@ -38,6 +38,31 @@ rules:
     applies_to: stage_9
     constraint: a CR is not closed until Stage 9 is complete — all PENDING manifest sections populated, all completion criteria satisfied, manifest status set to APPROVED, governance artifacts and methodology lessons recorded
     enforced_by: PROCESS_ENFORCED
+
+  - rule_id: COMPILER_VALIDATED_CLOSURE
+    applies_to: stages_8_and_9
+    constraint: authored artifacts are correct only if the compiler admits them (compile S1–S9, verified and attested); human review is advisory; a CR is not closeable until its artifacts compile clean
+    enforced_by: compiler_validation
+
+  - rule_id: GROUNDING_NOT_INHERITED
+    applies_to: all_stages
+    constraint: a stage that introduces a new claim about an existing artifact must establish grounding against authoritative sources (PI/PPS); grounding does not carry from prior-stage narrative; legitimate synthesis or distillation stages may make zero queries and remain conformant
+    enforced_by: PROCESS_ENFORCED
+
+  - rule_id: DISCOVERY_FINDINGS_REQUIRE_PI_VALIDATION
+    applies_to: all_stages
+    constraint: a newly discovered concern, constraint, assumption, dependency, architectural requirement, or gap shall be confirmed with PI before promotion into governed artifacts; discovery may propose, PI authorizes applicability
+    enforced_by: PROCESS_ENFORCED
+
+  - rule_id: CONCERN_TRACEABILITY_REQUIRED
+    applies_to: all_stages
+    constraint: a concern promoted into later stages must remain traceable to its originating finding, validation, or governing constraint (concern identity, not only artifact identity), so audits of immutability, chain-state, genesis, or integrity need not replay entire dossiers
+    enforced_by: PROCESS_ENFORCED
+
+  - rule_id: IDENTITY_PRESERVING_REFERENCE_VALIDATION
+    applies_to: all_stages
+    constraint: artifact references are validated by resolving identity against the artifact index before classifying; exact, typo-alias, wrong-domain, and proposed-new all preserve identity; only no-identity-anywhere is a fabrication; aggregate not-found counts are inadmissible
+    enforced_by: PROCESS_ENFORCED
 ```
 
 ---
@@ -82,6 +107,11 @@ This constitution does NOT govern:
 - **CR Closure is Mandatory:** Stage 9 is the terminal gate. A CR is not closed until all completion criteria are satisfied, the manifest status is APPROVED, governance artifacts produced during authoring are recorded, and methodology lessons are carried forward.
 - **PPS Snapshot as Baseline Oracle:** The PPS snapshot is the authoritative baseline for gap analysis. The vocabulary_snapshot is too shallow for this purpose.
 - **Governance Decision Gates:** Gates are human in V0. Future versions may satisfy them by committee, federation, or policy engine. The gate is a governance concern, not a human-presence requirement.
+- **Compiler-Validated Closure:** Authored artifacts are correct only if the compiler admits them (compile S1–S9, verified and attested). Human review is advisory. A CR is not closeable until its artifacts compile clean.
+- **Grounding Is Not Inherited:** A stage that introduces a new claim about an existing artifact must establish grounding against authoritative sources (PI/PPS). Grounding does not carry from prior-stage narrative. Legitimate synthesis or distillation stages may make zero queries and remain conformant — the focus is new claims, not query counts.
+- **Discovery Findings Require PI Validation:** A newly discovered concern, constraint, assumption, dependency, architectural requirement, or gap shall be confirmed with PI before promotion into governed artifacts. Discovery may propose; PI authorizes applicability.
+- **Concern Traceability Required:** A concern promoted into later stages must remain traceable to its originating finding, validation, or governing constraint — concern identity, not only artifact identity — so that audits of immutability, chain-state, genesis, or integrity need not replay entire dossiers.
+- **Identity-Preserving Reference Validation:** Artifact references are validated by resolving identity against the artifact index before classifying. Exact, typo-alias, wrong-domain, and proposed-new references all preserve identity; only no-identity-anywhere is a fabrication. Aggregate not-found counts are inadmissible.
 
 ---
 
