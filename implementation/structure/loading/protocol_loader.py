@@ -576,33 +576,9 @@ def _get_artifact_type_dir_from_prefix(prefix: str) -> str:
     Returns:
         Directory name (e.g., "workflows", "capability_contracts", "intents")
     """
-    type_map = {
-        "WF": "workflows",
-        "CC": "capability_contracts",
-        "CT": "capability_transforms",
-        "CS": "capability_side_effects",
-        "IN": "intents",
-        "TI": "ingress_intents",
-        "TE": "transport/egress",
-        "RB": "runtime_bindings",
-        "EV": "events",
-        "AC": "actors",
-        "ASSERT": "assertions",
-        "INVARIANT": "invariants",
-        "VOCAB": "vocabulary",
-        "CONSTITUTION": "concerns",
-        "SCHEMA": "schemas",
-        "STRUCTURE": "structures",
-        "SURFACE": "surface_contracts",
-    }
-
-    if prefix not in type_map:
-        raise ValueError(
-            f"Unknown artifact type prefix: {prefix}\n"
-            f"Valid prefixes: {', '.join(type_map.keys())}"
-        )
-
-    return type_map[prefix]
+    # Single source of truth: the ArtifactKindRegistry (replaces the legacy hardcoded type_map).
+    from pgs_governance.implementation.artifact_kinds import REGISTRY
+    return REGISTRY.directory(prefix)
 
 
 # ============================================================================

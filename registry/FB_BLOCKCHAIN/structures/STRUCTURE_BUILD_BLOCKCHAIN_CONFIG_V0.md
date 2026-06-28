@@ -69,6 +69,7 @@ artifact_discovery:
     - ASSERT
     - TEST_DATA
     - SURFACE
+    - ENTITY
 
 output_configuration:
   layer_outputs:
