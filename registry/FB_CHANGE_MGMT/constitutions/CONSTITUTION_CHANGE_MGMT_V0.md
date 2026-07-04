@@ -9,7 +9,7 @@ version: V0
 governed_by: fb.constitution::CONSTITUTION_GOVERNANCE_V0
 
 core:
-  description: Governs the PGS change management pipeline — from Change Request through Authoring Manifest to CR Closure
+  description: Governs the PGS change management design and authoring pipeline (Stages 0–7) — from Change Request through the Authoring Mandate; the S8/S9 construction phase is governed by fb.change_mgmt::CONSTITUTION_CONSTRUCTION_V0
   scope: change_management
   enforcement_model: process_enforced
 
@@ -29,20 +29,10 @@ rules:
     constraint: business analysis must contain WHAT only; HOW decisions must be deferred to Design Intent; purity filter enforced by authoring agent throughout
     enforced_by: PROCESS_ENFORCED
 
-  - rule_id: AUTHORING_MANIFEST_AFTER_ARTIFACTS
-    applies_to: stage_8
-    constraint: Stage 8 Authoring Manifest is generated as a pre-authoring baseline; all PENDING sections must be populated with actual execution data before the manifest is APPROVED
-    enforced_by: PROCESS_ENFORCED
-
-  - rule_id: CR_CLOSURE_MANDATORY
-    applies_to: stage_9
-    constraint: a CR is not closed until Stage 9 is complete — all PENDING manifest sections populated, all completion criteria satisfied, manifest status set to APPROVED, governance artifacts and methodology lessons recorded
-    enforced_by: PROCESS_ENFORCED
-
-  - rule_id: COMPILER_VALIDATED_CLOSURE
+  - rule_id: CONSTRUCTION_PHASE_DELEGATED
     applies_to: stages_8_and_9
-    constraint: authored artifacts are correct only if the compiler admits them (compile S1–S9, verified and attested); human review is advisory; a CR is not closeable until its artifacts compile clean
-    enforced_by: compiler_validation
+    constraint: the S8 Build Sheet Set, artifact construction, compiler-gated promotion, and the S9 Construction Record are governed by fb.change_mgmt::CONSTITUTION_CONSTRUCTION_V0, not here; a Change Request closes only after the S9 Construction Record is complete and its artifacts compile clean
+    enforced_by: PROCESS_ENFORCED
 
   - rule_id: GROUNDING_NOT_INHERITED
     applies_to: all_stages
@@ -69,7 +59,7 @@ rules:
 
 ## 1. Purpose
 
-This constitution establishes FB_CHANGE_MGMT as a first-class governance boundary over the PGS change management pipeline. It governs the process from Change Request through Authoring Manifest — the governed evidence chain that produces protocol artifacts.
+This constitution establishes FB_CHANGE_MGMT as a first-class governance boundary over the PGS change management **design and authoring pipeline (Stages 0–7)**. It governs the process from Change Request through the Authoring Mandate — the governed evidence chain that *specifies* the protocol artifacts to be built. The S8/S9 **construction phase** — projecting that design into artifacts and landing them — is governed by its peer constitution, `CONSTITUTION_CONSTRUCTION_V0`.
 
 The pipeline makes pre-BI cognitive work — problem framing, capability discovery, dependency resolution — governed and agent-assisted. Without this constitution, that work is implicit and human-only.
 
@@ -80,15 +70,15 @@ The pipeline is itself a candidate PGS Workflow. The authoring agent operates as
 ## 2. Scope Boundary
 
 This constitution governs:
-- The change management pipeline structure (Stages 0 through 9)
+- The change management design/authoring pipeline structure (Stages 0 through 7)
 - Stage gate sequencing requirements
 - The dossier-first ontology for change requests
 - Purity constraints across business analysis stages (1–4)
 - The Authoring Mandate as mandated (not advisory) build sequence
-- The Authoring Manifest as the closed-loop feedback artifact (pre-authoring baseline → post-execution APPROVED)
-- CR Closure as the mandatory terminal stage (Stage 9)
+- CR Closure as the terminal event — the CR closes after construction is complete (mechanics governed by `CONSTITUTION_CONSTRUCTION_V0`)
 
 This constitution does NOT govern:
+- The S8/S9 construction phase — Build Sheet Set, construction, compiler-gated promotion, Construction Record (governed by `fb.change_mgmt::CONSTITUTION_CONSTRUCTION_V0`)
 - Protocol artifact authoring or compilation (governed by pgs_compiler)
 - Runtime execution semantics (governed by fb.topology::CONSTITUTION_EXECUTION_V0)
 - Vocabulary admissibility (governed by fb.vocabulary::CONSTITUTION_VOCABULARY_V0)
@@ -102,12 +92,11 @@ This constitution does NOT govern:
 - **Stage Gate Mandatory:** No stage may begin before the prior stage gate is satisfied. No stage may be skipped.
 - **Dossier-First:** The primary unit is the governed change dossier. All stage documents for one CR live flat inside `change_mgmt/dossiers/[domain]/[subdomain]/`.
 - **Purity Filter:** Business analysis stages (1–4) must contain WHAT only. HOW decisions are deferred to Design Intent (Stage 6b). The purity filter is enforced by the authoring agent throughout.
-- **Authoring Mandate is Mandated:** Stage 7 produces the only admissible build sequence consistent with the dependency graph — not one plan among alternatives. Divergence from the Authoring Mandate is a governance event, recorded in the Authoring Manifest.
-- **Authoring Manifest is As-Built:** Stage 8 is generated as a pre-authoring baseline and completed post-execution. It is the as-built record, not a prediction. All PENDING sections must be populated before the manifest is APPROVED.
-- **CR Closure is Mandatory:** Stage 9 is the terminal gate. A CR is not closed until all completion criteria are satisfied, the manifest status is APPROVED, governance artifacts produced during authoring are recorded, and methodology lessons are carried forward.
+- **Authoring Mandate is Mandated:** Stage 7 produces the only admissible build sequence consistent with the dependency graph — not one plan among alternatives. Divergence from the Authoring Mandate is a governance event, recorded downstream in the S9 Construction Record.
+- **Construction is Delegated:** Stages 8–9 (Build Sheet Set → construct → promote → Construction Record) are governed by `CONSTITUTION_CONSTRUCTION_V0`. This pipeline hands the Authoring Mandate to construction; it does not itself build.
+- **CR Closure follows Construction:** A Change Request closes only after the S9 Construction Record is complete and its artifacts compile clean. CR closure is this constitution's terminal event; the construction mechanics it depends on are governed by `CONSTITUTION_CONSTRUCTION_V0`.
 - **PPS Snapshot as Baseline Oracle:** The PPS snapshot is the authoritative baseline for gap analysis. The vocabulary_snapshot is too shallow for this purpose.
 - **Governance Decision Gates:** Gates are human in V0. Future versions may satisfy them by committee, federation, or policy engine. The gate is a governance concern, not a human-presence requirement.
-- **Compiler-Validated Closure:** Authored artifacts are correct only if the compiler admits them (compile S1–S9, verified and attested). Human review is advisory. A CR is not closeable until its artifacts compile clean.
 - **Grounding Is Not Inherited:** A stage that introduces a new claim about an existing artifact must establish grounding against authoritative sources (PI/PPS). Grounding does not carry from prior-stage narrative. Legitimate synthesis or distillation stages may make zero queries and remain conformant — the focus is new claims, not query counts.
 - **Discovery Findings Require PI Validation:** A newly discovered concern, constraint, assumption, dependency, architectural requirement, or gap shall be confirmed with PI before promotion into governed artifacts. Discovery may propose; PI authorizes applicability.
 - **Concern Traceability Required:** A concern promoted into later stages must remain traceable to its originating finding, validation, or governing constraint — concern identity, not only artifact identity — so that audits of immutability, chain-state, genesis, or integrity need not replay entire dossiers.
@@ -139,9 +128,10 @@ Change Request
     ↓ Stage 6b — Design Intent (HOW: artifact family mapping + design decisions)
     ↓ [Governance Decision Gate]
     ↓ Stage 7 — Authoring Mandate (topological sort of DI dependency graph)
-    ↓ protocol artifact authoring + testing
-    ↓ Stage 8 — Authoring Manifest (pre-authoring baseline; as-designed vs. as-built; discoveries; future CR candidates)
-    ↓ Stage 9 — CR Closure (populate all PENDING sections; verify completion criteria; record governance artifacts and methodology lessons; manifest status → APPROVED)
+    ═══ handoff to the Construction phase (CONSTITUTION_CONSTRUCTION_V0) ═══
+    ↓ Stage 8 — Build Sheet Set  →  construct  →  compiler-gated promotion
+    ↓ Stage 9 — Construction Record (evidence)
+    ↓ CR Closure — the Change Request closes after the S9 Construction Record is complete and its artifacts compile clean
 ```
 
 **Discovery Saturation** (Stage 3 exit criterion) requires ALL THREE simultaneously:
@@ -159,7 +149,7 @@ Change Request
 | Stage 6 | WHERE — governance placement (domain, subdomain, ownership, boundaries) |
 | Stage 6b | HOW — artifact family mapping, design decisions |
 | Stage 7 | BUILD ORDER — topological sort of the DI dependency graph |
-| Stage 9 | CLOSED — did execution match design? what governance knowledge was produced? what methodology lessons carry forward? |
+| CR Closure | CLOSED — the CR closes after construction; whether execution matched design is recorded in the S9 Construction Record (governed by `CONSTITUTION_CONSTRUCTION_V0`) |
 
 Violations:
 - Artifact family names (CC_, WF_, CT_, CS_) in Stages 1–6 are purity violations.
@@ -171,7 +161,7 @@ Violations:
 ## 6. Protocol Boundaries (Non-Goals)
 
 This pipeline does NOT:
-- Auto-generate protocol artifacts (CC, CT, CS JSON files) — future stage
+- Auto-generate protocol artifacts (CC, CT, CS JSON files) — that is the S8/S9 construction phase (`CONSTITUTION_CONSTRUCTION_V0`), not this design/authoring pipeline
 - Auto-compile or auto-deploy
 - Bypass Governance Decision Gates
 - Treat vocabulary_snapshot as authoritative (PPS snapshot is the Baseline Oracle)
@@ -187,9 +177,10 @@ V0 intentionally governs:
 - pgs_change_mgmt as the reference implementation
 
 V0 intentionally defers:
-- Automated artifact generation from Authoring Mandate
 - Parallel change request processing
 - Federation-level governance gates
+
+(Automated artifact generation from the Authoring Mandate is realized in the construction phase, governed by `CONSTITUTION_CONSTRUCTION_V0`.)
 
 ---
 
