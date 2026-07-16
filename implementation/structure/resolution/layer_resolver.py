@@ -54,6 +54,7 @@ class LayerResolver:
         self._environment = environment
         self._project_root = project_root
         self._layer_paths: dict[str, Path] = {}
+        self._layer_configs: dict[str, dict] = {}
         self._layer_directories: dict[str, str] = {}
         self._loaded = False
 
@@ -131,6 +132,7 @@ class LayerResolver:
         layers = data.get("discovery", {}).get("layers", {})
 
         for layer_code, layer_config in layers.items():
+            self._layer_configs[layer_code] = layer_config or {}
             registry_module = layer_config.get("registry_module")
             if not registry_module:
                 continue
@@ -461,6 +463,33 @@ class LayerResolver:
         """
         module_root = self._resolve_layer_path(layer)
         return module_root.parent
+
+    def resolve_layer_implementation_namespace(self, layer: str) -> str:
+        """
+        Resolve the physical implementation namespace for a layer (STRUCTURE_DISCOVERY_V0).
+
+        The intra-package layout of capability implementations (e.g. "capability_transforms.atoms"
+        for domain layers, "transforms.atoms" for REUSABLE_TRANSFORMS) is governed metadata — the
+        single authoritative source for module-path materialization. Consumers append this to
+        "{package}.implementation." to form a fully-qualified module path, with zero embedded
+        knowledge of package organization.
+
+        Raises:
+            ValueError: If the layer is unknown, or declares no implementation_namespace.
+        """
+        self._load_artifacts()
+        if layer not in self._layer_configs:
+            raise ValueError(
+                f"Layer '{layer}' not found in STRUCTURE_DISCOVERY_V0. "
+                f"Available: {list(self._layer_configs.keys())}"
+            )
+        namespace = self._layer_configs[layer].get("implementation_namespace")
+        if not namespace:
+            raise ValueError(
+                f"Layer '{layer}' declares no implementation_namespace in STRUCTURE_DISCOVERY_V0. "
+                f"Add it to the layer's discovery config."
+            )
+        return namespace
 
     def list_layers(self) -> list[str]:
         """List all defined layer codes (from STRUCTURE_DISCOVERY_V0)."""

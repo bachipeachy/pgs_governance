@@ -34,6 +34,9 @@ discovery:
 
     REUSABLE_TRANSFORMS:
       registry_module: pgs_transforms.registry
+      # Physical layout of capability-transform implementations within this layer's package.
+      # Authoritative source for CT module-path materialization (no compiler-side layout knowledge).
+      implementation_namespace: transforms.atoms
       layer_category: platform
 
     REUSABLE_SIDE_EFFECTS:
@@ -63,6 +66,7 @@ discovery:
     BLOCKCHAIN:
       registry_module: pgs_blockchain.registry
       module_path_pattern: "{registry_module}.{subdomain}"
+      implementation_namespace: capability_transforms.atoms
       layer_category: domain
 
       # Subdomain enumeration (STRUCTURE-declared, no filesystem scanning)
@@ -74,6 +78,7 @@ discovery:
     AI_GOVERNANCE:
       registry_module: pgs_ai_governance.registry
       module_path_pattern: "{registry_module}.{domain}"
+      implementation_namespace: capability_transforms.atoms
       layer_category: domain
 
       # Domain enumeration (STRUCTURE-declared, no filesystem scanning)
