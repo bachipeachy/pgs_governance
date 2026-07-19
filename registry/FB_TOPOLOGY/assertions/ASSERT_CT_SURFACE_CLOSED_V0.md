@@ -26,6 +26,7 @@ allowed_capability_transforms:
   - capability_transforms::CT_PURE_ASSEMBLE_RECORD_V0
   - capability_transforms::CT_PURE_CHECK_QUOTA_AVAILABLE_V0
   - capability_transforms::CT_PURE_CHECK_TRAINING_STATUS_V0
+  - capability_transforms::CT_PURE_COMPARE_EQUAL_V0
   - capability_transforms::CT_PURE_DERIVE_CHILD_KEY_V0
   - capability_transforms::CT_PURE_DERIVE_MASTER_KEY_V0
   - capability_transforms::CT_PURE_ECDSA_SIGN_V0
