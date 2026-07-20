@@ -26,6 +26,9 @@ structure_code: STRUCTURE_BUILD_BLOCKCHAIN_CONFIG_V0
 version: V0
 governed_by: fb.constitution::CONSTITUTION_STRUCTURE_V0
 
+# Structure scope this build materializes — declared here, not hardcoded in the compiler.
+structure_scope: blockchain
+
 core:
   summary: Blockchain domain build configuration
   description: Blockchain artifact build (STRUCTURE-governed)

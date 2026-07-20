@@ -26,6 +26,9 @@ structure_code: STRUCTURE_BUILD_AI_GOVERNANCE_CONFIG_V0
 version: V0
 governed_by: fb.constitution::CONSTITUTION_STRUCTURE_V0
 
+# Structure scope this build materializes — declared here, not hardcoded in the compiler.
+structure_scope: ai_governance
+
 core:
   summary: AI Governance domain build configuration
   description: AI Governance artifact build (STRUCTURE-governed)

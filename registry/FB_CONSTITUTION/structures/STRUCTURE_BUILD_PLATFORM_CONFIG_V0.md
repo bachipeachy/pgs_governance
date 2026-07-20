@@ -42,6 +42,9 @@ structure_code: STRUCTURE_BUILD_PLATFORM_CONFIG_V0
 version: V0
 governed_by: fb.constitution::CONSTITUTION_STRUCTURE_V0
 
+# Structure scope this build materializes — declared here, not hardcoded in the compiler.
+structure_scope: platform
+
 core:
   summary: Build-time STRUCTURE configuration (platform scope)
   description: >
