@@ -23,8 +23,6 @@ core:
 
   violation_response: FAIL_IMMEDIATELY
 
-  enforced_by:
-    - ASSERT_RB_NO_LOGIC_V0
 
   anti_patterns:
     - conditional_expression: "Binding value contains if/else or ternary logic"

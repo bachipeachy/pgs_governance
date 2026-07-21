@@ -34,8 +34,6 @@ core:
 
   violation_response: FAIL_IMMEDIATELY
 
-  enforced_by:
-    - ASSERT_TRANSPORT_NO_WORKFLOW_SEMANTICS_V0
 
   anti_patterns:
     - execution_step_in_ti: >

@@ -35,8 +35,6 @@ core:
 
   violation_response: FAIL_IMMEDIATELY
 
-  enforced_by:
-    - ASSERT_TRANSPORT_CANONICAL_NORMALIZATION_V0
 
   anti_patterns:
     - ti_passthrough_mode: >

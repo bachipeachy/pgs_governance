@@ -24,8 +24,6 @@ core:
 
   violation_response: FAIL_IMMEDIATELY
 
-  enforced_by:
-    - ASSERT_HANDLER_REGISTRY_CLOSED_V0
 
   anti_patterns:
     - unregistered_handler: "ASSERT artifact declares implementation.module not present in HANDLER_REGISTRY"

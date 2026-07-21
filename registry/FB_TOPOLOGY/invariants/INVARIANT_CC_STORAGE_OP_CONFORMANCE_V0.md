@@ -26,8 +26,6 @@ core:
 
   violation_response: FAIL_IMMEDIATELY
 
-  enforced_by:
-    - ASSERT_CC_STORAGE_OP_CONFORMANCE_V0
 
   anti_patterns:
     - undeclared_op: "CC pipeline step declares op not in CS.core.policy.operations"
@@ -42,6 +40,12 @@ core:
     ct_steps_exempt: >
       Pipeline steps that bind a CT (transform) are exempt — transforms have
       no op field. Only CS-binding steps are subject to this invariant.
+
+# assert_projection — parameters the compiler-derived ASSERT carries (ASSERT is derived, not authored)
+assert_projection:
+  enforcement:
+    order: 42
+    level: ERROR
 ```
 
 ---

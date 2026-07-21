@@ -29,8 +29,6 @@ core:
 
   violation_response: FAIL_IMMEDIATELY
 
-  enforced_by:
-    - ASSERT_NO_UNDECLARED_BEHAVIOR_V0
 
   anti_patterns:
     - fallback_defaults_for_protocol_values: "config.get('trace_output_path', 'default') when trace_output_path SHOULD be in STRUCTURE"
@@ -107,6 +105,17 @@ extensions:
     - UNDECLARED_SIDE_EFFECT: "CS runtime attempted undeclared I/O operation"
     - DOMAIN_REQUIRED: "Domain parameter required but not provided"
     - REFERENCE_UNRESOLVED: "Artifact reference does not resolve"
+
+# assert_projection — parameters the compiler-derived ASSERT carries (ASSERT is derived, not authored)
+assert_projection:
+  ci_override:
+    level: ERROR
+  enforcement:
+    phase: validation
+    order: 10
+    failure_mode: HARD_FAIL
+    level: WARNING
+    scope: ALL_ARTIFACTS
 ```
 
 ---

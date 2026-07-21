@@ -19,8 +19,6 @@ core:
 
   violation_response: FAIL_IMMEDIATELY
 
-  enforced_by:
-    - ASSERT_UNIQUE_ARTIFACT_ID_V0
 
   anti_patterns:
     - duplicate_fqdn: "Multiple artifacts share same fqdn_id"

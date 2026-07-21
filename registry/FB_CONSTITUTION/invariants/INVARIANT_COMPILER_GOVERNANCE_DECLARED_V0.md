@@ -24,8 +24,6 @@ core:
 
   violation_response: FAIL_IMMEDIATELY
 
-  enforced_by:
-    - ASSERT_COMPILER_GOVERNANCE_DECLARED_V0
 
   anti_patterns:
     - missing_constitution: "CONSTITUTION_COMPILER_V0 absent from compiled artifact set"

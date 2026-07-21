@@ -22,8 +22,6 @@ core:
 
   violation_response: FAIL_IMMEDIATELY
 
-  enforced_by:
-    - ASSERT_WF_ENTRY_INTENT_V0
 
   anti_patterns:
     - missing_entry_intent: "Workflow has no IN node — no admission gate"

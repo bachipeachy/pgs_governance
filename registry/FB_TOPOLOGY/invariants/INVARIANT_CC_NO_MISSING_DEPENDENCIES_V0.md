@@ -27,8 +27,6 @@ core:
 
   violation_response: FAIL_IMMEDIATELY
 
-  enforced_by:
-    - ASSERT_CC_NO_MISSING_DEPENDENCIES_V0
 
   anti_patterns:
     - nonexistent_cc: "WF node references CC that does not exist (FQDN resolution failure)"

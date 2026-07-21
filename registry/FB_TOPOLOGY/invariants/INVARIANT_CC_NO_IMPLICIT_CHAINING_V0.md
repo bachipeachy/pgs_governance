@@ -32,8 +32,6 @@ core:
 
   violation_response: FAIL_IMMEDIATELY
 
-  enforced_by:
-    - ASSERT_CC_NO_IMPLICIT_CHAINING_V0
 
   anti_patterns:
     - next_step_field: "CC contains next_step field (implicit chaining)"

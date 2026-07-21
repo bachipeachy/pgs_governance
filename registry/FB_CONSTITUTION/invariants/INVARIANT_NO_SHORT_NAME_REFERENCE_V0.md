@@ -22,13 +22,15 @@ core:
 
   violation_response: FAIL_IMMEDIATELY
 
-  enforced_by:
-    - ASSERT_NO_SHORT_NAME_REFERENCE_V0
 
   anti_patterns:
     - short_name_in_id_field: "vocabulary_id: VOCAB_STATES_V0 (should be fully qualified)"
     - short_name_in_governed_by: "governed_by: CONSTITUTION_WF_V0 (should be fully qualified)"
     - ambiguous_reference: "Any reference without double-colon separator"
+
+# assert_projection — parameters the compiler-derived ASSERT carries (ASSERT is derived, not authored)
+assert_projection:
+  handler: pgs_governance.registry.handlers.assert_fqdn_only_references_v0
 ```
 
 ---

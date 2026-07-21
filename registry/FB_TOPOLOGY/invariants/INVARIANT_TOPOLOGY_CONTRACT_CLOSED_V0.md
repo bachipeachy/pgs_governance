@@ -14,8 +14,6 @@ core:
   scope:
     - CC
 
-  enforced_by:
-    - ASSERT_TOPOLOGY_CONTRACT_CLOSED_V0
 ```
 
 ---

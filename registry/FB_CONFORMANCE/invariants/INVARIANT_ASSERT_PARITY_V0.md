@@ -26,8 +26,6 @@ core:
 
   violation_response: FAIL_IMMEDIATELY
 
-  enforced_by:
-    - ASSERT_ASSERT_PARITY_V0
 
   anti_patterns:
     - orphaned_invariant: "INVARIANT without matching ASSERT (declaration without enforcement)"
@@ -43,6 +41,17 @@ core:
     meta_validation: >
       This is meta-governance: governance validating governance.
       Ensures governance layer is self-consistent before validating artifacts.
+
+# assert_projection — parameters the compiler-derived ASSERT carries (ASSERT is derived, not authored)
+assert_projection:
+  ci_override:
+    level: ERROR
+  enforcement:
+    phase: meta_validation
+    order: 1
+    failure_mode: HARD_FAIL
+    scope: GOVERNANCE_ARTIFACTS
+    level: WARNING
 ```
 
 ---

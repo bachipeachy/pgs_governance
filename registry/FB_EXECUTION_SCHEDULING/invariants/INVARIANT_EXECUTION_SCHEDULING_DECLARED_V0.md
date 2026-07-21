@@ -20,6 +20,13 @@ core:
   enforcement_stage:
     - compiler_validation
   violation_response: FAIL_COMPILE
+
+# assert_projection — parameters the compiler-derived ASSERT carries (ASSERT is derived, not authored)
+assert_projection:
+  enforcement:
+    phase: assert
+    failure_mode: HARD_FAIL
+    scope: ALL_ARTIFACTS
 ```
 
 ---

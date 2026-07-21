@@ -29,8 +29,6 @@ core:
 
   violation_response: WARN
 
-  enforced_by:
-    - ASSERT_CC_NO_UNUSED_OUTPUTS_V0
 
   anti_patterns:
     - unused_output: "CC step produces output field that no downstream node consumes"

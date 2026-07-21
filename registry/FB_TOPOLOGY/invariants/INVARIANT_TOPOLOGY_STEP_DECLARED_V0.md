@@ -14,8 +14,6 @@ core:
   scope:
     - CC
 
-  enforced_by:
-    - ASSERT_TOPOLOGY_STEP_DECLARED_V0
 ```
 
 ---

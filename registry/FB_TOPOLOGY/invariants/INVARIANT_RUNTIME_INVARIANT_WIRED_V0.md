@@ -28,14 +28,18 @@ core:
 
   violation_response: FAIL_IMMEDIATELY
 
-  enforced_by:
-    - ASSERT_RUNTIME_INVARIANT_WIRED_V0
 
   anti_patterns:
     - unbound_invariant: "runtime invariant missing runtime_binding fields"
     - missing_outcome: "enforcing CC does not declare the violation outcome in result_surface"
     - missing_route: "enforcing workflow does not route the violation outcome to the declared terminal node"
     - decorative_governance: "invariant artifact exists but no enforcement point upholds it"
+
+# assert_projection — parameters the compiler-derived ASSERT carries (ASSERT is derived, not authored)
+assert_projection:
+  scope:
+    applies_to:
+    - PLATFORM
 ```
 
 ## Summary

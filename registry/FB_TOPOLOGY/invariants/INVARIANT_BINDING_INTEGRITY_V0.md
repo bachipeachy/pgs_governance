@@ -24,8 +24,6 @@ core:
 
   violation_response: FAIL_IMMEDIATELY
 
-  enforced_by:
-    - ASSERT_BINDING_INTEGRITY_V0
 
   anti_patterns:
     - short_name_binding: "RB binding key uses short name instead of FQDN"

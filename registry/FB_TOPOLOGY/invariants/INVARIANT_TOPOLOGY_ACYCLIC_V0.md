@@ -24,8 +24,6 @@ core:
 
   violation_response: FAIL_IMMEDIATELY
 
-  enforced_by:
-    - ASSERT_TOPOLOGY_ACYCLIC_V0
 
   anti_patterns:
     - cyclic_dependency: "Artifact A depends on B depends on A (transitive cycle)"

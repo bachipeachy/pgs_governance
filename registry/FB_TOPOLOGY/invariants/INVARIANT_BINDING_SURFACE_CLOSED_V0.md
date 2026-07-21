@@ -29,8 +29,6 @@ core:
 
   violation_response: FAIL_IMMEDIATELY
 
-  enforced_by:
-    - ASSERT_BINDING_SURFACE_CLOSED_V0
 
   anti_patterns:
     - unknown_payload_field: >

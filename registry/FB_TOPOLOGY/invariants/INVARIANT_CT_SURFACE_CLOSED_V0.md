@@ -22,8 +22,6 @@ core:
 
   violation_response: FAIL_IMMEDIATELY
 
-  enforced_by:
-    - ASSERT_CT_SURFACE_CLOSED_V0
 
   anti_patterns:
     - undeclared_ct: "CT exists in registry but not in allowed list"
@@ -42,6 +40,37 @@ core:
       CT surface closure enables finite enumeration of all transforms,
       making the system's computation bounded and auditable. No dynamic CT
       discovery is permitted at runtime.
+
+# assert_projection — parameters the compiler-derived ASSERT carries (ASSERT is derived, not authored)
+assert_projection:
+  scope:
+    applies_to:
+    - PLATFORM
+  allowed_capability_transforms:
+  - capability_transforms::CT_EXEC_EMIT_V0
+  - capability_transforms::CT_PURE_ASSEMBLE_RECORD_V0
+  - capability_transforms::CT_PURE_CHECK_QUOTA_AVAILABLE_V0
+  - capability_transforms::CT_PURE_CHECK_TRAINING_STATUS_V0
+  - capability_transforms::CT_PURE_COMPARE_EQUAL_V0
+  - capability_transforms::CT_PURE_DERIVE_CHILD_KEY_V0
+  - capability_transforms::CT_PURE_DERIVE_MASTER_KEY_V0
+  - capability_transforms::CT_PURE_ECDSA_SIGN_V0
+  - capability_transforms::CT_PURE_ENTROPY_TO_MNEMONIC_V0
+  - capability_transforms::CT_PURE_EVALUATE_INACTIVITY_V0
+  - capability_transforms::CT_PURE_EXTRACT_V0
+  - capability_transforms::CT_PURE_FILTER_RECORDS_V0
+  - capability_transforms::CT_PURE_GENERATE_ENTROPY_V0
+  - capability_transforms::CT_PURE_GENERATE_ID_V0
+  - capability_transforms::CT_PURE_KECCAK256_HASH_V0
+  - capability_transforms::CT_PURE_LOOKUP_V0
+  - capability_transforms::CT_PURE_MAP_RESULT_TO_HTTP_V0
+  - capability_transforms::CT_PURE_PASSTHROUGH_V0
+  - capability_transforms::CT_PURE_MNEMONIC_TO_SEED_V0
+  - capability_transforms::CT_PURE_PRIVATE_KEY_TO_PUBLIC_V0
+  - capability_transforms::CT_PURE_PUBKEY_TO_ETH_ADDRESS_V0
+  - capability_transforms::CT_PURE_VALIDATE_PARAMETER_RULES_V0
+  - capability_transforms::CT_PURE_VALIDATE_RECORD_STRUCTURE_V0
+  - capability_transforms::CT_PURE_VALIDATE_SET_MEMBERSHIP_V0
 ```
 
 ---

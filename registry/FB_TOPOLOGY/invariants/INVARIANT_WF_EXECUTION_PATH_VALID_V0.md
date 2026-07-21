@@ -23,8 +23,6 @@ core:
 
   violation_response: FAIL_IMMEDIATELY
 
-  enforced_by:
-    - ASSERT_WF_EXECUTION_PATH_VALID_V0
 
   anti_patterns:
     - unreachable_node: "Node exists but not reachable from start_node"

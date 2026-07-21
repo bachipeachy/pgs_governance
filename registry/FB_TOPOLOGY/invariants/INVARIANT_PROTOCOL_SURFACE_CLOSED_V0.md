@@ -22,8 +22,6 @@ core:
 
   violation_response: FAIL_IMMEDIATELY
 
-  enforced_by:
-    - ASSERT_PROTOCOL_SURFACE_CLOSED_V0
 
   anti_patterns:
     - dangling_reference: "Reference to artifact not in compilation graph"

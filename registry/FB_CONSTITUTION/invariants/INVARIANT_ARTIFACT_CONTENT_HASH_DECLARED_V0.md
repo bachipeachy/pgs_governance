@@ -24,8 +24,6 @@ core:
 
   violation_response: FAIL_IMMEDIATELY
 
-  enforced_by:
-    - ASSERT_ARTIFACT_CONTENT_HASH_DECLARED_V0
 
   anti_patterns:
     - missing_content_hash: "Compiled artifact has no content_hash field"

@@ -29,8 +29,6 @@ core:
 
   violation_response: FAIL_IMMEDIATELY
 
-  enforced_by:
-    - ASSERT_CC_INPUTS_SATISFIED_V0
 
   anti_patterns:
     - undefined_payload_field: "CC references $.payload.field that does not exist in IN schema"

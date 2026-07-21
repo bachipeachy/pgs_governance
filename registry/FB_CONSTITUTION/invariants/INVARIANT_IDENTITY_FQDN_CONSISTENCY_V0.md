@@ -25,8 +25,6 @@ core:
 
   violation_response: FAIL_IMMEDIATELY
 
-  enforced_by:
-    - ASSERT_IDENTITY_FQDN_CONSISTENCY_V0
 
   anti_patterns:
     - fqdn_namespace_mismatch: "FQDN namespace doesn't match artifact's actual namespace"
@@ -38,6 +36,15 @@ core:
       Every artifact has exactly one FQDN.
       FQDN is derived from namespace + artifact_code (never manually set).
       Resolution must be unambiguous and reproducible.
+
+# assert_projection — parameters the compiler-derived ASSERT carries (ASSERT is derived, not authored)
+assert_projection:
+  handler: pgs_governance.registry.handlers.assert_identity_fqdn_consistency
+  enforcement:
+    phase: validation
+    order: 5
+    failure_mode: HARD_FAIL
+    scope: ALL_ARTIFACTS
 ```
 
 ---

@@ -26,8 +26,6 @@ core:
 
   violation_response: FAIL_IMMEDIATELY
 
-  enforced_by:
-    - ASSERT_IMPLEMENTATION_ADMISSIBLE_V0
 
   anti_patterns:
     - missing_implementation: "CT atom or CS with no implementation block"

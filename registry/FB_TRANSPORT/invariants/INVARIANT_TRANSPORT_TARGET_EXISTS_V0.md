@@ -29,8 +29,6 @@ core:
 
   violation_response: FAIL_IMMEDIATELY
 
-  enforced_by:
-    - ASSERT_TRANSPORT_TARGET_EXISTS_V0
 
   anti_patterns:
     - missing_workflow_binding: >

@@ -25,8 +25,6 @@ core:
 
   violation_response: FAIL_IMMEDIATELY
 
-  enforced_by:
-    - ASSERT_COMPILER_NO_EXECUTION_V0
 
   anti_patterns:
     - execution_state_in_frontmatter: "CT/CS artifact frontmatter contains trace_id, execution_result, or runtime_output"

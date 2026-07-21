@@ -22,8 +22,6 @@ core:
 
   violation_response: FAIL_IMMEDIATELY
 
-  enforced_by:
-    - ASSERT_WF_CC_ONLY_NODES_V0
 
   anti_patterns:
     - ct_node_in_wf: "Workflow node of type CT — CT must be invoked from within a CC"

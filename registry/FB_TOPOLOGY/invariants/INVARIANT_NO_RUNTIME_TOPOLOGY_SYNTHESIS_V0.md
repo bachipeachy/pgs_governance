@@ -14,8 +14,6 @@ core:
   scope:
     - CC
 
-  enforced_by:
-    - ASSERT_NO_RUNTIME_TOPOLOGY_SYNTHESIS_V0
 ```
 
 ---

@@ -9,10 +9,20 @@ version: V0
 governed_by: fb.vocabulary::CONSTITUTION_VOCABULARY_V0
 
 core:
-  description: Governs ASSERT artifacts — binding, purity, compiler-only execution, and violations output
+  description: >
+    Governs ASSERT — the compiler-derived executable projection of an INVARIANT.
+    ASSERT is NOT a hand-authored artifact: the compiler synthesizes ASSERT_X from
+    INVARIANT_X at governance time (S4), binding a handler by convention
+    (handlers.assert_<stem>) or an invariant `assert_projection.handler` override,
+    and drawing check parameters from the invariant's `assert_projection`. Covers
+    binding, purity, compiler-only execution, and violations output.
   scope: artifact
   governs:
     - ASSERT
+  derivation:
+    authored: false
+    derived_from: INVARIANT
+    rule: "ASSERT_X is the executable projection of INVARIANT_X; parameters come from the invariant's assert_projection block"
   enforcement_model: compiler_enforced
 
 rules:

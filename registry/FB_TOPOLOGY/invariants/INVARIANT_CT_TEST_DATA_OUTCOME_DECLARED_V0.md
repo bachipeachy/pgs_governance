@@ -27,8 +27,6 @@ core:
   scope:
     - TEST_DATA
 
-  enforced_by:
-    - ASSERT_CT_TEST_DATA_OUTCOME_DECLARED_V0
 ```
 
 ---

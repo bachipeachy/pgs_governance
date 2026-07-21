@@ -26,8 +26,6 @@ core:
   scope:
     - WF
 
-  enforced_by:
-    - ASSERT_WF_NODE_KEY_BINDING_UNIQUE_V0
 ```
 
 ---

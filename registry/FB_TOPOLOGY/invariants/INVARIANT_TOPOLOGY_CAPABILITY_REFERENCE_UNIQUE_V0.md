@@ -14,8 +14,6 @@ core:
   scope:
     - CC
 
-  enforced_by:
-    - ASSERT_TOPOLOGY_CAPABILITY_REFERENCE_UNIQUE_V0
 ```
 
 ---

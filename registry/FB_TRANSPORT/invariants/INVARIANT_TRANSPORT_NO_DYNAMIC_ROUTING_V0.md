@@ -28,8 +28,6 @@ core:
 
   violation_response: FAIL_IMMEDIATELY
 
-  enforced_by:
-    - ASSERT_TRANSPORT_NO_DYNAMIC_ROUTING_V0
 
   anti_patterns:
     - conditional_workflow_selection: >

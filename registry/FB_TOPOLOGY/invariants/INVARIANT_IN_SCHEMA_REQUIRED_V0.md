@@ -22,8 +22,6 @@ core:
 
   violation_response: FAIL_IMMEDIATELY
 
-  enforced_by:
-    - ASSERT_IN_SCHEMA_REQUIRED_V0
 
   anti_patterns:
     - missing_schema: "IN artifact has no schema field"

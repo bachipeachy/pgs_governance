@@ -23,8 +23,6 @@ core:
 
   violation_response: FAIL_IMMEDIATELY
 
-  enforced_by:
-    - ASSERT_IN_WORKFLOW_BINDING_V0
 
   anti_patterns:
     - shared_entry_intent: "Same IN FQDN referenced as start_node by multiple WFs"

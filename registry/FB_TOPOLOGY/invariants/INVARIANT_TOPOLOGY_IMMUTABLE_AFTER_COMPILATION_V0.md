@@ -14,8 +14,6 @@ core:
   scope:
     - CC
 
-  enforced_by:
-    - ASSERT_TOPOLOGY_IMMUTABLE_AFTER_COMPILATION_V0
 ```
 
 ---

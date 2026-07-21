@@ -26,8 +26,6 @@ core:
 
   violation_response: FAIL_IMMEDIATELY
 
-  enforced_by:
-    - ASSERT_CC_CAPABILITY_BINDING_VALID_V0
 
   anti_patterns:
     - zero_bindings: "Pipeline step has no capability binding (neither transform nor side_effect)"

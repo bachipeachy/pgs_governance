@@ -31,8 +31,6 @@ core:
 
   violation_response: FAIL_IMMEDIATELY
 
-  enforced_by:
-    - ASSERT_SCHEMA_CONFORMANCE_V0
 
   anti_patterns:
     - missing_required_field: "Frontmatter missing a schema-required field"

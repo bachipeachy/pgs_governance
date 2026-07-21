@@ -22,8 +22,6 @@ core:
 
   violation_response: FAIL_IMMEDIATELY
 
-  enforced_by:
-    - ASSERT_CS_SURFACE_CLOSED_V0
 
   anti_patterns:
     - undeclared_cs: "CS exists in registry but not in allowed list"
@@ -42,6 +40,21 @@ core:
       CS surface closure enables finite enumeration of all side effects,
       making the system's behavior bounded and auditable. No dynamic CS
       discovery is permitted at runtime.
+
+# assert_projection — parameters the compiler-derived ASSERT carries (ASSERT is derived, not authored)
+assert_projection:
+  scope:
+    applies_to:
+    - PLATFORM
+  allowed_capability_side_effects:
+  - capability_side_effects::CS_APPENDONLY_JSONL_V0
+  - capability_side_effects::CS_CONCURRENT_WORKFLOWS_V0
+  - capability_side_effects::CS_MUTABLE_JSON_V0
+  - capability_side_effects::CS_REGISTRY_V0
+  - capability_side_effects::CS_SEND_EMAIL_V0
+  - capability_side_effects::CS_WORKFLOW_GATEWAY_V0
+  - capability_side_effects::CS_WORKFLOW_LOOP_V0
+  - pgs_capabilities.registry.name_service.capability_side_effects::CS_NAME_REGISTRY_V0
 ```
 
 ---
